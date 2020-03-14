@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="JTattooDemo">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/JTattooDemo.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mysql-connector-java-8.0.16.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pdfbox-app-1.8.10.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
