@@ -2,10 +2,7 @@ package Persistence;
 
 import Model.UsuarioFtp;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,12 +25,12 @@ public class DAOUsuarioFtp {
                 usr.setId(Integer.parseInt(rs.getString(1)));
                 usr.setUsuario(rs.getString(2));
                 usr.setPassword(rs.getString(3));
-                usr.setAdministradores_id(Integer.parseInt(rs.getString(4)));
+                usr.setConsorcios_id(Integer.parseInt(rs.getString(4)));
                 usrs.add(usr);
             }
             rs.close();
         } catch (SQLException ex) {
-            Logger.getLogger(UsuarioFtp.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DAOUsuarioFtp.class.getName()).log(Level.SEVERE, null, ex);
         }
         return usrs;
     }
@@ -50,11 +47,11 @@ public class DAOUsuarioFtp {
                 usr.setId(Integer.parseInt(rs.getString(1)));
                 usr.setUsuario(rs.getString(2));
                 usr.setPassword(rs.getString(3));
-                usr.setAdministradores_id(Integer.parseInt(rs.getString(4)));
+                usr.setConsorcios_id(Integer.parseInt(rs.getString(4)));
             }
             rs.close();
         } catch (SQLException ex) {
-            Logger.getLogger(UsuarioFtp.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DAOUsuarioFtp.class.getName()).log(Level.SEVERE, null, ex);
         }
         return usr;
     }
@@ -71,18 +68,18 @@ public class DAOUsuarioFtp {
                 usr.setId(Integer.parseInt(rs.getString(1)));
                 usr.setUsuario(rs.getString(2));
                 usr.setPassword(rs.getString(3));
-                usr.setAdministradores_id(Integer.parseInt(rs.getString(4)));
+                usr.setConsorcios_id(Integer.parseInt(rs.getString(4)));
             }
             rs.close();
         } catch (SQLException ex) {
-            Logger.getLogger(UsuarioFtp.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DAOUsuarioFtp.class.getName()).log(Level.SEVERE, null, ex);
         }
         return usr;
     }
 
-    public UsuarioFtp getUsuarioFtpByIdAdministrador(int id)
+    public UsuarioFtp getUsuarioFtpByIdConsorcio(int id)
     {
-        String sql = "SELECT * FROM usuario WHERE administradores_id = "+ id +";";
+        String sql = "SELECT * FROM usuario WHERE consorcios_id = "+ id +";";
         Statement st;
         UsuarioFtp usr = new UsuarioFtp();
         try {
@@ -92,12 +89,48 @@ public class DAOUsuarioFtp {
                 usr.setId(Integer.parseInt(rs.getString(1)));
                 usr.setUsuario(rs.getString(2));
                 usr.setPassword(rs.getString(3));
-                usr.setAdministradores_id(Integer.parseInt(rs.getString(4)));
+                usr.setConsorcios_id(Integer.parseInt(rs.getString(4)));
             }
             rs.close();
         } catch (SQLException ex) {
-            Logger.getLogger(UsuarioFtp.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DAOUsuarioFtp.class.getName()).log(Level.SEVERE, null, ex);
         }
         return usr;
+    }
+
+    public void guardar(String usuario, String password, int idConsorcio) {
+        PreparedStatement pps;
+        try {
+            pps = cn.prepareStatement("INSERT INTO usuario (usuario, password, consorcios_id) VALUES (?,?,?)");
+            pps.setString(1, usuario);
+            pps.setString(2, password);
+            pps.setString(3, idConsorcio+"");
+            pps.executeUpdate();
+            pps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOUsuarioFtp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void modificar(String usuario, String password, int idConsorcio) {
+        PreparedStatement pps;
+        //UPDATE usuario SET usuario = 'carrarayasociad', password = 'Jk2zz14?' WHERE consorcios_id =  1;
+        try {
+            pps = cn.prepareStatement("UPDATE usuario SET usuario = '" + usuario + "' , password = '" + password + "' WHERE consorcios_id = '" + idConsorcio + "'");
+            pps.executeUpdate();
+            pps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void eliminar(int idConsorcio) {
+        try {
+            PreparedStatement pps = cn.prepareStatement("DELETE FROM usuario WHERE consorcios_id = '" + idConsorcio + "'");
+            pps.executeUpdate();
+            pps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

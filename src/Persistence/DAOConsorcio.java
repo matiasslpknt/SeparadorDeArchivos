@@ -1,10 +1,8 @@
 package Persistence;
 
 import Model.Consorcio;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,16 +10,15 @@ import java.util.logging.Logger;
 public class DAOConsorcio {
     ConectionBD con = new ConectionBD();
     Connection cn = con.conexion();
-    public ArrayList<Consorcio> getConsorcios()
-    {
+
+    public ArrayList<Consorcio> getConsorcios() {
         ArrayList<Consorcio> consorcios = new ArrayList<Consorcio>();
         String sql = "select * from consorcios;";
         Statement st;
         try {
             st = cn.createStatement();
-            ResultSet rs  = st.executeQuery(sql);
-            while(rs.next())
-            {
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
                 Consorcio consorcio = new Consorcio();
                 consorcio.setId(Integer.parseInt(rs.getString(1)));
                 consorcio.setNombre(rs.getString(2));
@@ -36,9 +33,8 @@ public class DAOConsorcio {
         return consorcios;
     }
 
-    public Consorcio getConsorcioById(int id)
-    {
-        String sql = "SELECT * FROM consorcios WHERE id = '"+ id +"'";
+    public Consorcio getConsorcioById(int id) {
+        String sql = "SELECT * FROM consorcios WHERE id = '" + id + "'";
         Statement st;
         Consorcio compl = new Consorcio();
         try {
@@ -57,9 +53,8 @@ public class DAOConsorcio {
         return compl;
     }
 
-    public Consorcio getConsorcioByNombre(String nombre)
-    {
-        String sql = "SELECT * FROM consorcios WHERE nombre = '"+ nombre +"'";
+    public Consorcio getConsorcioByNombre(String nombre) {
+        String sql = "SELECT * FROM consorcios WHERE nombre = '" + nombre + "'";
         Statement st;
         Consorcio compl = new Consorcio();
         try {
@@ -78,16 +73,14 @@ public class DAOConsorcio {
         return compl;
     }
 
-    public ArrayList<Consorcio> getConsorciosByIdAdministrador(int id)
-    {
+    public ArrayList<Consorcio> getConsorciosByIdAdministrador(int id) {
         ArrayList<Consorcio> consorcios = new ArrayList<Consorcio>();
         String sql = "select * from consorcios WHERE administradores_id = " + id + ";";
         Statement st;
         try {
             st = cn.createStatement();
-            ResultSet rs  = st.executeQuery(sql);
-            while(rs.next())
-            {
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
                 Consorcio consorcio = new Consorcio();
                 consorcio.setId(Integer.parseInt(rs.getString(1)));
                 consorcio.setNombre(rs.getString(2));
@@ -100,5 +93,72 @@ public class DAOConsorcio {
             Logger.getLogger(DAOConsorcio.class.getName()).log(Level.SEVERE, null, ex);
         }
         return consorcios;
+    }
+
+    public ArrayList<Consorcio> getConsorciosConNombre(String nombre) {
+        ArrayList<Consorcio> consorcios = new ArrayList<Consorcio>();
+        String sql = "select * from consorcios where nombre like '%" + nombre + "%';";
+        Statement st;
+        try {
+            st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                Consorcio consorcio = new Consorcio();
+                consorcio.setId(Integer.parseInt(rs.getString(1)));
+                consorcio.setNombre(rs.getString(2));
+                consorcio.setDirectorioFtp(rs.getString(3));
+                consorcio.setAdministradores_id(Integer.parseInt(rs.getString(4)));
+                consorcios.add(consorcio);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOConsorcio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return consorcios;
+    }
+
+    public void guardar(String nombre, String directorio, int idAdministrador) {
+        PreparedStatement pps;
+        try {
+            pps = cn.prepareStatement("INSERT INTO consorcios (nombre, directorioFtp, administradores_id) VALUES (?,?,?)");
+            pps.setString(1, nombre);
+            pps.setString(2, directorio);
+            pps.setString(3, idAdministrador+"");
+            pps.executeUpdate();
+            pps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOConsorcio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void modificar(String nombre, String directorioFtp, int id) {
+        PreparedStatement pps;
+        try {
+            pps = cn.prepareStatement("UPDATE consorcios SET nombre = '" + nombre + "' , directorioFtp = '" + directorioFtp + "' WHERE id = '" + id + "'");
+            pps.executeUpdate();
+            pps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void eliminar(int idConsorcio) {
+        try {
+            PreparedStatement pps = cn.prepareStatement("DELETE FROM consorcios WHERE id = '" + idConsorcio + "'");
+            pps.executeUpdate();
+            pps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void eliminarPorAdministrador(int idAdministrador) {
+        try {
+            PreparedStatement pps = cn.prepareStatement("DELETE FROM consorcios WHERE administradores_id = '" + idAdministrador + "'");
+            pps.executeUpdate();
+            pps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

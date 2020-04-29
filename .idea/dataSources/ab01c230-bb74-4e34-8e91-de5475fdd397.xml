@@ -1196,14 +1196,14 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="297" parent="283" name="administradores_id">
+    <column id="297" parent="283" name="consorcios_id">
       <Position>4</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="298" parent="283" name="fk_usuario_administradores_idx">
-      <ColNames>administradores_id</ColNames>
+    <index id="298" parent="283" name="fk_usuario_consorcios1_idx">
+      <ColNames>consorcios_id</ColNames>
       <Type>btree</Type>
     </index>
     <key id="299" parent="283" name="PRIMARY">
@@ -1211,9 +1211,9 @@
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="300" parent="283" name="fk_usuario_administradores">
-      <ColNames>administradores_id</ColNames>
-      <RefTableName>administradores</RefTableName>
+    <foreign-key id="300" parent="283" name="fk_usuario_consorcios1">
+      <ColNames>consorcios_id</ColNames>
+      <RefTableName>consorcios</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
   </database-model>

@@ -4,6 +4,7 @@ public class Consorcio {
     private int id;
     private String nombre;
     private String directorioFtp;
+    private UsuarioFtp usuarioFtp;
     private int administradores_id;
     private String directorioDescargadoExpensas;
     private String directorioDescargadoIndices;
@@ -72,5 +73,13 @@ public class Consorcio {
 
     public void setDirectorioDescargadoLiquidacion(String directorioDescargadoLiquidacion) {
         this.directorioDescargadoLiquidacion = directorioDescargadoLiquidacion;
+    }
+
+    public UsuarioFtp getUsuarioFtp() {
+        return usuarioFtp;
+    }
+
+    public void setUsuarioFtp(UsuarioFtp usuarioFtp) {
+        this.usuarioFtp = usuarioFtp;
     }
 }

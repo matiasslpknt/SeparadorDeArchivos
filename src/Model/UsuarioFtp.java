@@ -4,7 +4,7 @@ public class UsuarioFtp {
     private int id;
     private String usuario;
     private String password;
-    private int administradores_id;
+    private int consorcios_id;
 
     public int getId() {
         return id;
@@ -30,11 +30,11 @@ public class UsuarioFtp {
         this.password = password;
     }
 
-    public int getAdministradores_id() {
-        return administradores_id;
+    public int getConsorcios_id() {
+        return consorcios_id;
     }
 
-    public void setAdministradores_id(int administradores_id) {
-        this.administradores_id = administradores_id;
+    public void setConsorcios_id(int consorcios_id) {
+        this.consorcios_id = consorcios_id;
     }
 }
