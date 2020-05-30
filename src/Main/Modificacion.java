@@ -7,6 +7,7 @@ import Model.Administrador;
 import Model.Consorcio;
 import Model.UsuarioFtp;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +27,7 @@ public class Modificacion extends javax.swing.JFrame {
     private JButton btnVolver;
     private JButton btnGuardarAdministrador;
     private JComboBox cmbAdministradores;
+    private JTextField txtIdConsorcioWeb;
     private AdministradorBO administradorBO = new AdministradorBO();
     private ConsorcioBO consorcioBO = new ConsorcioBO();
     private UsuarioFtpBO usuarioBO = new UsuarioFtpBO();
@@ -35,9 +37,11 @@ public class Modificacion extends javax.swing.JFrame {
         super("COTERRANEA");
         setContentPane(panelModificacion);
 
-        cargarComboBoxAdministrador(cmbAdministradores);
-        cargarComboBoxConsorcio(cmbConsorcios);
-        setearCamposdesdeComboBox();
+        boolean op1 = cargarComboBoxAdministrador(cmbAdministradores);
+        boolean op2 = cargarComboBoxConsorcio(cmbConsorcios);
+        if (op1 == true && op2 == true) {
+            setearCamposdesdeComboBox();
+        }
 
         btnGuardarAdministrador.addActionListener(new ActionListener() {
             @Override
@@ -65,14 +69,22 @@ public class Modificacion extends javax.swing.JFrame {
         btnGuardarConsorcio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (txtNombreConsorcio.getText().trim().equals("") || txtDirectorio.getText().trim().equals("") || txtUsuario.getText().trim().equals("") || txtPassword.getText().trim().equals("")) {
+                txtDirectorio.setText(txtDirectorio.getText().replace("ftp://", ""));
+                int idConsorcio = consorcioBO.getConsorcioByNombre(cmbConsorcios.getSelectedItem().toString()).getId();
+                Consorcio myConsorcio = consorcioBO.getConsorcioById(idConsorcio);
+                UsuarioFtp myUser = usuarioBO.getUsuarioFtpByIdConsorcio(myConsorcio.getId());
+                myConsorcio.setUsuarioFtp(myUser);
+                if (txtNombreConsorcio.getText().trim().equals("") || txtDirectorio.getText().trim().equals("") || txtUsuario.getText().trim().equals("") || txtPassword.getText().trim().equals("") || txtIdConsorcioWeb.getText().trim().equals("")) {
                     JOptionPane.showMessageDialog(null, "Complete todos los campos del consorcio.");
-                } else if (txtNombreConsorcio.getText().trim().equals(cmbConsorcios.getSelectedItem().toString())) {
-                    JOptionPane.showMessageDialog(null, "El nombre ingresado es igual al actual.");
+                } else if (myConsorcio.getNombre().equals(txtNombreConsorcio.getText()) &&
+                        myConsorcio.getIdConsorcioWeb().equals(txtIdConsorcioWeb.getText()) &&
+                        myConsorcio.getDirectorioFtp().equals(txtDirectorio.getText()) &&
+                        myConsorcio.getUsuarioFtp().getUsuario().equals(txtUsuario.getText()) &&
+                        myConsorcio.getUsuarioFtp().getPassword().equals(txtPassword.getText())) {
+                    JOptionPane.showMessageDialog(null, "No hay cambios.");
                 } else {
-                    if (validarNombreConsorcio()) {
-                        int idConsorcio = consorcioBO.getConsorcioByNombre(cmbConsorcios.getSelectedItem().toString()).getId();
-                        consorcioBO.modificar(txtNombreConsorcio.getText().trim(), txtDirectorio.getText().trim(), idConsorcio);
+                    if (myConsorcio.getNombre().equals(txtNombreConsorcio.getText())) {
+                        consorcioBO.modificar(txtNombreConsorcio.getText().trim(), txtDirectorio.getText().trim(), idConsorcio, txtIdConsorcioWeb.getText().trim());
                         usuarioBO.modificar(txtUsuario.getText().trim(), txtPassword.getText().trim(), idConsorcio);
                         Modificacion modificacion = new Modificacion();
                         modificacion.pack();
@@ -80,8 +92,19 @@ public class Modificacion extends javax.swing.JFrame {
                         modificacion.setLocationRelativeTo(null);
                         modificacion.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                         dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "El nombre ingresado esta contenido dentro del nombre de otro consorcio o el nombre contiene el nombre de otro consorcio.");
+                    } else{
+                        if(validarNombreConsorcio()){
+                            consorcioBO.modificar(txtNombreConsorcio.getText().trim(), txtDirectorio.getText().trim(), idConsorcio, txtIdConsorcioWeb.getText().trim());
+                            usuarioBO.modificar(txtUsuario.getText().trim(), txtPassword.getText().trim(), idConsorcio);
+                            Modificacion modificacion = new Modificacion();
+                            modificacion.pack();
+                            modificacion.setVisible(true);
+                            modificacion.setLocationRelativeTo(null);
+                            modificacion.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            dispose();
+                        }else {
+                            JOptionPane.showMessageDialog(null, "El nombre ingresado esta contenido dentro del nombre de otro consorcio o el nombre contiene el nombre de otro consorcio.");
+                        }
                     }
                 }
             }
@@ -111,30 +134,39 @@ public class Modificacion extends javax.swing.JFrame {
         });
     }
 
-    public void setearCamposdesdeComboBox(){
+    public void setearCamposdesdeComboBox() {
         txtNombreAdministrador.setText(cmbAdministradores.getSelectedItem().toString().trim());
         txtNombreConsorcio.setText(cmbConsorcios.getSelectedItem().toString().trim());
         Consorcio cons = consorcioBO.getConsorcioByNombre(cmbConsorcios.getSelectedItem().toString().trim());
+        txtIdConsorcioWeb.setText(cons.getIdConsorcioWeb());
         txtDirectorio.setText(cons.getDirectorioFtp());
         UsuarioFtp user = usuarioBO.getUsuarioFtpByIdConsorcio(cons.getId());
         txtUsuario.setText(user.getUsuario());
         txtPassword.setText(user.getPassword());
     }
 
-    public void cargarComboBoxAdministrador(JComboBox cboo) {
+    public boolean cargarComboBoxAdministrador(JComboBox cboo) {
         ArrayList<Administrador> administradores = administradorBO.getAdministradores();
-        for (Administrador ad : administradores) {
-            cboo.addItem(ad.getNombre());
+        if (administradores.size() > 0) {
+            for (Administrador ad : administradores) {
+                cboo.addItem(ad.getNombre());
+            }
+            AutoCompleteDecorator.decorate(cboo);
+            return true;
         }
-        AutoCompleteDecorator.decorate(cboo);
+        return false;
     }
 
-    public void cargarComboBoxConsorcio(JComboBox cboo) {
+    public boolean cargarComboBoxConsorcio(JComboBox cboo) {
         ArrayList<Consorcio> consorcios = consorcioBO.getConsorcios();
-        for (Consorcio con : consorcios) {
-            cboo.addItem(con.getNombre());
+        if (consorcios.size() > 0) {
+            for (Consorcio con : consorcios) {
+                cboo.addItem(con.getNombre());
+            }
+            AutoCompleteDecorator.decorate(cboo);
+            return true;
         }
-        AutoCompleteDecorator.decorate(cboo);
+        return false;
     }
 
     public boolean validarNombreAdministrador() {

@@ -2,6 +2,7 @@ package Main;
 
 import Business.*;
 import Model.*;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,20 +15,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.Splitter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.apache.commons.net.ftp.FTP;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
 
 public class Principal extends javax.swing.JFrame {
     private JPanel panel1;
@@ -56,13 +50,8 @@ public class Principal extends javax.swing.JFrame {
     //Guarda los archivos no reconocidos (expensas, mora, liquidacion)
     private ArrayList<String> archivosDesconocidos = new ArrayList<String>();
     private int progreso = 0;
-
-    private String urlApi = "https://api.androidhive.info/contacts/";
-    private String objeto = "servicios";
-    private String campo = "idservicio";
-    private String username = "api";
-    private String pass = "M@nz@nelli";
-    private RestService restService = new RestService(new RestTemplateBuilder());
+    private ApiServices apiServices = new ApiServices();
+    private ArrayList<String> consorciosFallidosWeb = new ArrayList<String>();
 
     public Principal() {
         super("COTERRANEA");
@@ -73,11 +62,6 @@ public class Principal extends javax.swing.JFrame {
         chkFinMes.setSelected(false);
         eliminarCarpetasFTP(directorioFtp);
         eliminarCarpetasFTP(directorioSalida);
-        //mati("");
-        //login();
-        //loginBeta();
-        //loginTest();
-        view("69985");
 
         btnEjecutar.addActionListener(new ActionListener() {
             @Override
@@ -269,12 +253,26 @@ public class Principal extends javax.swing.JFrame {
             System.out.println("Subiendo archivos:");
             actualizarLabelProgreso("Subiendo archivos...");
             subirMasivamente();
+            System.out.println("Actualizando Web");
+            actualizarLabelProgreso("Actualizando web...");
+            actualizarWeb();
             System.out.println();
             progreso = 100;
             actualizarProgressBar();
             System.out.println();
-            actualizarLabelProgreso("FINALIZADO!!!");
-            JOptionPane.showMessageDialog(null, "FINALIZADO!!!");
+            if (consorciosFallidosWeb.size() > 0) {
+                String consorciosFallados = "";
+                for (String idCons : consorciosFallidosWeb) {
+                    consorciosFallados += idCons + ", ";
+                }
+                consorciosFallados = consorciosFallados.trim();
+                consorciosFallados = consorciosFallados.substring(0, consorciosFallados.length() - 2);
+                actualizarLabelProgreso("FINALIZADO!!! Algunos consorcios fallaron en la actualizacion web: " + consorciosFallados);
+                JOptionPane.showMessageDialog(null, "FINALIZADO!!! Algunos consorcios fallaron en la actualizacion web: " + consorciosFallados);
+            } else {
+                actualizarLabelProgreso("FINALIZADO!!!");
+                JOptionPane.showMessageDialog(null, "FINALIZADO!!!");
+            }
             dispose();
         } else {
             progreso = 100;
@@ -286,150 +284,116 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    private JwtDTO loginBeta() {
-        String url = "https://coterranea.net/api/api/";
-
-        // Request headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-        map.add("username", "api");
-        map.add("password", "M@nz@nelli");
-        map.add("action", "login");
-
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
-
-        ResponseEntity<JwtDTO> response = null;
-        try {
-            response = this.restService.template().postForEntity(url, request, JwtDTO.class);
-            System.out.println(response.getBody().getJWT());
-            return response.getBody();
-        } catch (HttpClientErrorException e) {
-            System.out.println(e.getStatusCode() + "  " + e.getResponseBodyAsString());
-            return null;
+    public void actualizarWeb() {
+        for (Administrador admin : administradores) {
+            for (Consorcio cons : admin.getConsorcios()) {
+                String idConsorcioWeb = cons.getIdConsorcioWeb();
+                ServicioDTO servicioDTO = apiServices.listService(idConsorcioWeb);
+                String miFecha = parsearFechaHoyParaWeb();
+                String observacion = servicioDTO.getServicios()[0].getObservacion();
+                System.out.println(observacion);
+                String mesCurso = getNombreCarpetaMesEnCurso();
+                String mesAnterior = getNombreCarpetaInternaMesAnterior(getFechaHoy());
+                String observacionNueva = "";
+                String idAdministrador = servicioDTO.getServicios()[0].getIdAdministrador();
+                if (observacion.contains(mesAnterior)) {
+                    observacionNueva = observacion.replace(mesAnterior, mesCurso);
+                }
+                System.out.println(observacionNueva);
+                ServicioDTO2 serv = new ServicioDTO2();
+                serv.setIdTipoServicio("5");
+                serv.setResumen("Gastos " + getNombreMes() + " " + getAnioASubir());
+                serv.setIdCountry(idConsorcioWeb);
+                serv.setIdAdministrador(idAdministrador);
+                serv.setObservacion(observacionNueva);
+                serv.setFechaDesde(miFecha);
+                serv.setFechaHasta(miFecha);
+                serv.setFechaAlta(miFecha);
+                serv.setRespondido("SI");
+                serv.setFechaRespondido(miFecha);
+                serv.setOrigen("ADMINISTRADOR");
+                serv.setIdServicioPadre("0");
+                serv.setIdestado("0");
+                serv.setServicios_tipo_ticket("1");
+                serv.setPrioridad("4-BAJA");
+                serv.setAction("add");
+                serv.setObject("servicios");
+                ServicioDTOAdd response = apiServices.addService(serv);
+                if (response.getSucces().equals(false)) {
+                    consorciosFallidosWeb.add(idConsorcioWeb);
+                }
+            }
         }
     }
 
-    private JwtDTO login() {
-        String url = "https://coterranea.net/api/api/";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        LoginDTO login = new LoginDTO(username, pass);
-        HttpEntity<LoginDTO> request = new HttpEntity<>(login, headers);
-        ResponseEntity<JwtDTO> response = null;
-        try {
-            response = this.restService.template().postForEntity(url, request, JwtDTO.class);
-            System.out.println(response.getBody().getJWT());
-            return response.getBody();
-        } catch (HttpClientErrorException e) {
-            System.out.println(e.getStatusCode() + "  " + e.getResponseBodyAsString());
-            return null;
-        }
+    public String getAnioASubir() {
+        String carpeta = getNombreCarpetaMesEnCurso();
+        String[] componentes = carpeta.split("-");
+        return componentes[1];
     }
 
-    private ServicioDTO view(String idServicio) {
-        String url = "https://coterranea.net/api/api/";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        String jwt = login().getJWT();
-        headers.add("X-Authorization","Bearer " + jwt);
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-        map.add("object", "servicios");
-        map.add("action", "view");
-        map.add("idservicio", idServicio);
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
-        ResponseEntity<ServicioDTO> response = null;
-        try {
-            response = this.restService.template().postForEntity(url, request, ServicioDTO.class);
-            System.out.println(response.getBody().getServicios().getObservacion());
-            System.out.println(response.getBody().getServicios().getIdservicio());
-            return response.getBody();
-        } catch (HttpClientErrorException e) {
-            System.out.println(e.getStatusCode() + "  " + e.getResponseBodyAsString());
-            return null;
-        }
+    public String parsearFechaHoyParaWeb() {
+        String fecha = getFechaHoy();
+        String[] componentes = fecha.split("/");
+        String anio = componentes[2];
+        String mes = componentes[1];
+        String dia = componentes[0];
+        return anio + "-" + mes + "-" + dia;
     }
 
-
-    private JwtDTO loginTest() {
-        String url = "https://coterranea.net/api/api/?action=login&password=M@nz@nelli&username=api";
-
-        // Request headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
-        ResponseEntity<JwtDTO> response = null;
-        try {
-            response = this.restService.template().getForEntity(url, JwtDTO.class);
-            System.out.println(response.getBody().getJWT());
-            /*String valor = response.getBody();
-            ObjectMapper om = new ObjectMapper();
-            try {
-                JwtDTO a = om.readValue(valor, JwtDTO.class);
-                System.out.println(a.getJWT());
-            } catch (JsonProcessingException e1) {
-                System.out.println(e1.getMessage());
-                e1.printStackTrace();
-                return null;
-            }*/
-            return response.getBody();
-        } catch (HttpClientErrorException e) {
-            System.out.println(e.getStatusCode() + "  " + e.getResponseBodyAsString());
-            return null;
+    public String getNombreMes() {
+        String fecha = getFechaHoy();
+        String[] componentes = fecha.split("/");
+        String mes = componentes[1];
+        if (chkFinMes.isSelected()) {
+            int mesInt = Integer.parseInt(mes);
+            mesInt++;
+            if (mesInt == 13) {
+                mesInt = 1;
+            }
+            mes = mesInt + "";
+            if (mes.length() == 1) {
+                mes = "0" + mes;
+            }
         }
+        String mesEscrito = "";
+        if (mes.equals("01")) {
+            mesEscrito = "enero";
+        } else if (mes.equals("02")) {
+            mesEscrito = "febrero";
+        } else if (mes.equals("03")) {
+            mesEscrito = "marzo";
+        } else if (mes.equals("04")) {
+            mesEscrito = "abril";
+        } else if (mes.equals("05")) {
+            mesEscrito = "mayo";
+        } else if (mes.equals("06")) {
+            mesEscrito = "junio";
+        } else if (mes.equals("07")) {
+            mesEscrito = "julio";
+        } else if (mes.equals("08")) {
+            mesEscrito = "agosto";
+        } else if (mes.equals("09")) {
+            mesEscrito = "septiembre";
+        } else if (mes.equals("10")) {
+            mesEscrito = "octubre";
+        } else if (mes.equals("11")) {
+            mesEscrito = "noviembre";
+        } else if (mes.equals("12")) {
+            mesEscrito = "diciembre";
+        }
+        return mesEscrito;
     }
 
-    private ServicioDTO2 mati(ServicioDTO2 servicio, String jwt) {
-        String url = "https://coterranea.net/api/api/?action=list&object=servicios";
-
-        // Request headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-Authorization", "Bearer " + jwt);
-
-        Map<String, String> headers1 = new HashMap<>();
-		/*
-		seteo de headers1
-
-        for (Map.EntrySet<String, String> entry: headers.entrySet()) {
-            headers.set(entry.key(), entry.value());
-        }*/
-
-        ServicioDTO2 servicioS = new ServicioDTO2();
-        // build the request
-        HttpEntity<ServicioDTO2> entity = new HttpEntity<>(servicioS, headers);
-
-        // send POST request
-        ResponseEntity<ServicioDTO2> response = null;
-        try {
-            response = this.restService.template().postForEntity(url, entity, ServicioDTO2.class);
-
-            return response.getBody();
-
-        } catch (HttpClientErrorException e) {
-            System.out.println(e.getStatusCode() + "  " + e.getResponseBodyAsString());
-            return null;
-            // ObjectMapper om = new ObjectMapper();
-            // try {
-            // 	ClaseError om.readValue(e.getResponseBodyAsString(), ClaseError.class);
-            // } catch (JsonProcessingException e1) {
-            // 	return null;
-            // }
-        }
-    }
-
-    public void actualizarLabelProgreso(String texto){
+    public void actualizarLabelProgreso(String texto) {
         txtProgreso.setText(texto);
         super.update(this.getGraphics());
     }
-    public void subirMasivamente(){
+
+    public void subirMasivamente() {
         int tamanio = administradores.size();
         double prog = 22 / tamanio;
-        for(Administrador a : administradores){
+        for (Administrador a : administradores) {
             String dirFTP = a.getConsorcios().get(0).getDirectorioFtp();
             String usr = a.getConsorcios().get(0).getUsuarioFtp().getUsuario();
             String pass = a.getConsorcios().get(0).getUsuarioFtp().getPassword();
@@ -439,7 +403,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void eliminarCarpetasFTP(String directorio) {
         ArrayList<String> directorios = getDirectorios(directorio);
-        if(directorios.size() > 0){
+        if (directorios.size() > 0) {
             ArrayList<String> masters = new ArrayList<String>();
             ArrayList<String> slaves = new ArrayList<String>();
             for (int i = 0; i < directorios.size(); i++) {
@@ -555,6 +519,7 @@ public class Principal extends javax.swing.JFrame {
     public void cargarComboBoxEstilo(JComboBox cboo) {
         cboo.addItem("MANZUR");
         cboo.addItem("CASAS DIAZ");
+        cboo.addItem("PAGANI");
         cboo.setSelectedItem("MANZUR");
         AutoCompleteDecorator.decorate(cboo);
     }
@@ -761,7 +726,7 @@ public class Principal extends javax.swing.JFrame {
                     String elNombre = lasPartes[lasPartes.length - 1];
                     //System.out.println(nuevoDirectorio + "/" + elNombre);
                     upload(server, nuevoDirectorio + "/" + elNombre, user, pass, miArchivo, miProgreso, tamanio, numero);
-                    numero ++;
+                    numero++;
                 }
 
                 client.disconnect();
@@ -793,12 +758,12 @@ public class Principal extends javax.swing.JFrame {
                     }
                 }
             }
-            for(String g : archivosSubir){
+            for (String g : archivosSubir) {
                 String[] lasPartes = parsearBarraEscape(g).split("/");
                 String elNombre = lasPartes[lasPartes.length - 1];
                 String nuevoDirectorio = destino + "testMatias"; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 upload(server, nuevoDirectorio + "/" + elNombre, user, pass, g, miProgreso, tamanio, numero);
-                numero ++;
+                numero++;
             }
         }
     }
@@ -820,9 +785,9 @@ public class Principal extends javax.swing.JFrame {
             inputStream.close();
             if (done) {
                 System.out.println("Archivo subido correctamente.");
-                if(firstLocalFile.delete()){
+                if (firstLocalFile.delete()) {
                     System.out.println("Archivo eliminado correctamente: " + localPath);
-                }else{
+                } else {
                     System.out.println("Problema para eliminar el archivo: " + localPath);
                 }
             }
@@ -1034,6 +999,10 @@ public class Principal extends javax.swing.JFrame {
             textoExpensa = "Importes sobre los que se calcula la expensa";
             textoLiquidacion = "GASTOS PRESUPUESTADOS A RECAUDAR";
             textoMora = "DETALLE DE MOROSOS";
+        } else if (cmbEstilo.getSelectedItem().toString().equals("PAGANI")) {
+            textoExpensa = "Expensas Extraord.:";
+            textoLiquidacion = "DETALLE DE GASTOS";
+            textoMora = "DETALLE DE MOROSOS";
         }
         String nombreCarpetaMesAnterior = getNombreCarpetaInternaMesAnterior(getFechaHoy());
         ArrayList<Administrador> administradoresFtp = new ArrayList<Administrador>();
@@ -1193,6 +1162,10 @@ public class Principal extends javax.swing.JFrame {
             textoExpensa = "Importes sobre los que se calcula la expensa";
             textoLiquidacion = "GASTOS PRESUPUESTADOS A RECAUDAR";
             textoMora = "DETALLE DE MOROSOS";
+        } else if (cmbEstilo.getSelectedItem().toString().equals("PAGANI")) {
+            textoExpensa = "Expensas Extraord.:";
+            textoLiquidacion = "DETALLE DE GASTOS";
+            textoMora = "DETALLE DE MOROSOS";
         }
         //para cada administrador entramos en la carpeta de descarga y obtenemos el nombre de cada archivo correspondiente
         // a expensas/liquidacion/mora dejando los indices para analizar mas adelante.
@@ -1240,10 +1213,20 @@ public class Principal extends javax.swing.JFrame {
 
     private ArrayList<Administrador> getAdministradoresEnDirectorio(String directorio) {
         ArrayList<String> administradoresDescargados = getAdministradoresEnDirectorioPlano(directorio);
+        //
+        System.out.println("administradoresDescargados:");
+        for (String s : administradoresDescargados) {
+            System.out.println(s);
+        }
+        //
         ArrayList<Administrador> adminis = new ArrayList<Administrador>();
 
         for (int i = 0; i < administradoresDescargados.size(); i++) {
             Administrador adm = administradorBO.getAdministradorByNombre(administradoresDescargados.get(i));
+            //
+            System.out.println("adm: ");
+            System.out.println(adm.getNombre());
+            //
             if (adm.getNombre() != null) {
                 adminis.add(adm);
             }
@@ -1251,8 +1234,18 @@ public class Principal extends javax.swing.JFrame {
 
         for (int i = 0; i < adminis.size(); i++) {
             ArrayList<Consorcio> consorcios = consorcioBO.getConsorciosByIdAdministrador(adminis.get(i).getId());
+            //
+            System.out.println("consorcios: ");
+            for (Consorcio s : consorcios) {
+                System.out.println(s.getNombre());
+            }
+            //
             for (int k = 0; k < consorcios.size(); k++) {
                 UsuarioFtp us = usuarioFtoBO.getUsuarioFtpByIdConsorcio(consorcios.get(k).getId());
+                //
+                System.out.println("us: ");
+                System.out.println(us.getUsuario());
+                //
                 consorcios.get(k).setUsuarioFtp(us);
             }
             adminis.get(i).setConsorcios(consorcios);
@@ -1262,10 +1255,6 @@ public class Principal extends javax.swing.JFrame {
 
     private String parsearBarraEscape(String linea) {
         return linea.replace("\\", "/");
-    }
-
-    private String parsearBarraEscapeInverso(String linea) {
-        return linea.replace("/", "\\");
     }
 
     //devuelve una lista de los nombres de administradores en la carpeta de descargas(devuelve los nombres de las carpetas)
@@ -1316,26 +1305,6 @@ public class Principal extends javax.swing.JFrame {
                     .filter(f -> f.endsWith("." + tipo)).collect(Collectors.toList());
             for (int i = 0; i < result.size(); i++) {
                 archivos.add(result.get(i));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return archivos;
-    }
-
-    //trae de las carpetas que hay en un directorio
-    private ArrayList<String> getArchivos2(String directorio) {
-        ArrayList<String> archivos = new ArrayList<String>();
-        try (Stream<Path> walk = Files.walk(Paths.get(directorio))) {
-            List<String> result = walk.map(x -> x.toString())
-                    .filter(f -> f.endsWith("")).collect(Collectors.toList());
-            for (int i = 0; i < result.size(); i++) {
-                String[] parts = parsearBarraEscape(result.get(i)).split("/");
-                String theName = parts[parts.length - 1];
-                String d = directorio.substring(0, directorio.length() - 1);
-                if(!theName.contains(".pdf") && !theName.contains(".mdb") && !theName.contains(".asp") && !theName.contains(".txt") && !result.get(i).equals(d)){
-                    archivos.add(result.get(i));
-                }
             }
         } catch (IOException e) {
             e.printStackTrace();

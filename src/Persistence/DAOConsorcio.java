@@ -24,6 +24,7 @@ public class DAOConsorcio {
                 consorcio.setNombre(rs.getString(2));
                 consorcio.setDirectorioFtp(rs.getString(3));
                 consorcio.setAdministradores_id(Integer.parseInt(rs.getString(4)));
+                consorcio.setIdConsorcioWeb(rs.getString(5));
                 consorcios.add(consorcio);
             }
             rs.close();
@@ -45,6 +46,7 @@ public class DAOConsorcio {
                 compl.setNombre(rs.getString(2));
                 compl.setDirectorioFtp(rs.getString(3));
                 compl.setAdministradores_id(Integer.parseInt(rs.getString(4)));
+                compl.setIdConsorcioWeb(rs.getString(5));
             }
             rs.close();
         } catch (SQLException ex) {
@@ -65,6 +67,7 @@ public class DAOConsorcio {
                 compl.setNombre(rs.getString(2));
                 compl.setDirectorioFtp(rs.getString(3));
                 compl.setAdministradores_id(Integer.parseInt(rs.getString(4)));
+                compl.setIdConsorcioWeb(rs.getString(5));
             }
             rs.close();
         } catch (SQLException ex) {
@@ -86,6 +89,7 @@ public class DAOConsorcio {
                 consorcio.setNombre(rs.getString(2));
                 consorcio.setDirectorioFtp(rs.getString(3));
                 consorcio.setAdministradores_id(Integer.parseInt(rs.getString(4)));
+                consorcio.setIdConsorcioWeb(rs.getString(5));
                 consorcios.add(consorcio);
             }
             rs.close();
@@ -108,6 +112,7 @@ public class DAOConsorcio {
                 consorcio.setNombre(rs.getString(2));
                 consorcio.setDirectorioFtp(rs.getString(3));
                 consorcio.setAdministradores_id(Integer.parseInt(rs.getString(4)));
+                consorcio.setIdConsorcioWeb(rs.getString(5));
                 consorcios.add(consorcio);
             }
             rs.close();
@@ -117,13 +122,14 @@ public class DAOConsorcio {
         return consorcios;
     }
 
-    public void guardar(String nombre, String directorio, int idAdministrador) {
+    public void guardar(String nombre, String directorio, int idAdministrador, String idConsorcioWeb) {
         PreparedStatement pps;
         try {
-            pps = cn.prepareStatement("INSERT INTO consorcios (nombre, directorioFtp, administradores_id) VALUES (?,?,?)");
+            pps = cn.prepareStatement("INSERT INTO consorcios (nombre, directorioFtp, administradores_id, idConsorcioWeb) VALUES (?,?,?,?)");
             pps.setString(1, nombre);
             pps.setString(2, directorio);
             pps.setString(3, idAdministrador+"");
+            pps.setString(4, idConsorcioWeb);
             pps.executeUpdate();
             pps.close();
         } catch (SQLException ex) {
@@ -131,10 +137,10 @@ public class DAOConsorcio {
         }
     }
 
-    public void modificar(String nombre, String directorioFtp, int id) {
+    public void modificar(String nombre, String directorioFtp, int id, String idConsorcioWeb) {
         PreparedStatement pps;
         try {
-            pps = cn.prepareStatement("UPDATE consorcios SET nombre = '" + nombre + "' , directorioFtp = '" + directorioFtp + "' WHERE id = '" + id + "'");
+            pps = cn.prepareStatement("UPDATE consorcios SET nombre = '" + nombre + "' , directorioFtp = '" + directorioFtp + "', idConsorcioWeb = '" + idConsorcioWeb + "' WHERE id = '" + id + "'");
             pps.executeUpdate();
             pps.close();
         } catch (SQLException ex) {

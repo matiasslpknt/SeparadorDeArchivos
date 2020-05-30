@@ -136,10 +136,11 @@ public class DAOAdministrador {
                 administrador.setNombreConsorcio(rs.getString(4));
                 administrador.setDirectorioFtp(rs.getString(5));
                 administrador.setAdministradores_id(Integer.parseInt(rs.getString(6)));
-                administrador.setIdUsuario(Integer.parseInt(rs.getString(7)));
-                administrador.setUsuario(rs.getString(8));
-                administrador.setPassword(rs.getString(9));
-                administrador.setConsorcios_id(Integer.parseInt(rs.getString(10)));
+                administrador.setIdConsorcioWeb(rs.getString(7));
+                administrador.setIdUsuario(Integer.parseInt(rs.getString(8)));
+                administrador.setUsuario(rs.getString(9));
+                administrador.setPassword(rs.getString(10));
+                administrador.setConsorcios_id(Integer.parseInt(rs.getString(11)));
                 administradores.add(administrador);
             }
             rs.close();
@@ -164,10 +165,11 @@ public class DAOAdministrador {
                 administrador.setNombreConsorcio(rs.getString(4));
                 administrador.setDirectorioFtp(rs.getString(5));
                 administrador.setAdministradores_id(Integer.parseInt(rs.getString(6)));
-                administrador.setIdUsuario(Integer.parseInt(rs.getString(7)));
-                administrador.setUsuario(rs.getString(8));
-                administrador.setPassword(rs.getString(9));
-                administrador.setConsorcios_id(Integer.parseInt(rs.getString(10)));
+                administrador.setIdConsorcioWeb(rs.getString(7));
+                administrador.setIdUsuario(Integer.parseInt(rs.getString(8)));
+                administrador.setUsuario(rs.getString(9));
+                administrador.setPassword(rs.getString(10));
+                administrador.setConsorcios_id(Integer.parseInt(rs.getString(11)));
                 administradores.add(administrador);
             }
             rs.close();
@@ -192,10 +194,11 @@ public class DAOAdministrador {
                 administrador.setNombreConsorcio(rs.getString(4));
                 administrador.setDirectorioFtp(rs.getString(5));
                 administrador.setAdministradores_id(Integer.parseInt(rs.getString(6)));
-                administrador.setIdUsuario(Integer.parseInt(rs.getString(7)));
-                administrador.setUsuario(rs.getString(8));
-                administrador.setPassword(rs.getString(9));
-                administrador.setConsorcios_id(Integer.parseInt(rs.getString(10)));
+                administrador.setIdConsorcioWeb(rs.getString(7));
+                administrador.setIdUsuario(Integer.parseInt(rs.getString(8)));
+                administrador.setUsuario(rs.getString(9));
+                administrador.setPassword(rs.getString(10));
+                administrador.setConsorcios_id(Integer.parseInt(rs.getString(11)));
                 administradores.add(administrador);
             }
             rs.close();
@@ -220,10 +223,11 @@ public class DAOAdministrador {
                 administrador.setNombreConsorcio(rs.getString(4));
                 administrador.setDirectorioFtp(rs.getString(5));
                 administrador.setAdministradores_id(Integer.parseInt(rs.getString(6)));
-                administrador.setIdUsuario(Integer.parseInt(rs.getString(7)));
-                administrador.setUsuario(rs.getString(8));
-                administrador.setPassword(rs.getString(9));
-                administrador.setConsorcios_id(Integer.parseInt(rs.getString(10)));
+                administrador.setIdConsorcioWeb(rs.getString(7));
+                administrador.setIdUsuario(Integer.parseInt(rs.getString(8)));
+                administrador.setUsuario(rs.getString(9));
+                administrador.setPassword(rs.getString(10));
+                administrador.setConsorcios_id(Integer.parseInt(rs.getString(11)));
                 administradores.add(administrador);
             }
             rs.close();

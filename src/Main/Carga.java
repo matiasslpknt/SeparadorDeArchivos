@@ -23,6 +23,7 @@ public class Carga extends javax.swing.JFrame {
     private JTextField txtUsuario;
     private JTextField txtPassword;
     private JButton btnVolver;
+    private JTextField txtIdConsorcio;
     private AdministradorBO administradorBO = new AdministradorBO();
     private ConsorcioBO consorcioBO = new ConsorcioBO();
     private UsuarioFtpBO usuarioBO = new UsuarioFtpBO();
@@ -57,7 +58,7 @@ public class Carga extends javax.swing.JFrame {
         btnGuardarConsorcio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (txtNombreConsorcio.getText().trim().equals("") || txtDirectorio.getText().trim().equals("") || txtUsuario.getText().trim().equals("") || txtPassword.getText().trim().equals("")) {
+                if (txtNombreConsorcio.getText().trim().equals("") || txtDirectorio.getText().trim().equals("") || txtUsuario.getText().trim().equals("") || txtPassword.getText().trim().equals("") || txtIdConsorcio.getText().trim().equals("")) {
                     JOptionPane.showMessageDialog(null, "Complete todos los campos del consorcio.");
                 } else {
                     if (validarNombreConsorcio()) {
@@ -66,7 +67,7 @@ public class Carga extends javax.swing.JFrame {
                         if(dir.contains("ftp://")){
                             dir = dir.replace("ftp://", "");
                         }
-                        consorcioBO.guardar(txtNombreConsorcio.getText().trim(), dir, idAdministrador);
+                        consorcioBO.guardar(txtNombreConsorcio.getText().trim(), dir, idAdministrador, txtIdConsorcio.getText().trim());
                         int idConsorcio = consorcioBO.getConsorcioByNombre(txtNombreConsorcio.getText().trim()).getId();
                         usuarioBO.guardar(txtUsuario.getText().trim(), txtPassword.getText().trim(), idConsorcio);
                         limpiarCamposConsorcio();
@@ -94,6 +95,7 @@ public class Carga extends javax.swing.JFrame {
         txtUsuario.setText("");
         txtPassword.setText("");
         txtDirectorio.setText("");
+        txtIdConsorcio.setText("");
     }
 
     public void cargarComboBoxAdministrador(JComboBox cboo) {

@@ -107,22 +107,25 @@ public class Visualizacion extends JFrame {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("ADMINISTRADOR");
         modelo.addColumn("CONSORCIO");
+        modelo.addColumn("ID CONSORCIO");
         modelo.addColumn("DIRECTORIO FTP");
         modelo.addColumn("USUARIO");
         modelo.addColumn("PASSWORD");
         t.setModel(modelo);
         for (Bean admin : beans) {
-            String[] datos = new String[5];
+            String[] datos = new String[6];
             String nombreAdmin = admin.getNombreAdministrador();
             datos[0] = nombreAdmin;
             String consorcioNombre = admin.getNombreConsorcio();
             datos[1] = consorcioNombre;
+            String idConsorcioWeb = admin.getIdConsorcioWeb();
+            datos[2] = idConsorcioWeb;
             String directorio = admin.getDirectorioFtp();
-            datos[2] = directorio;
+            datos[3] = directorio;
             String usuario = admin.getUsuario();
-            datos[3] = usuario;
+            datos[4] = usuario;
             String password = admin.getPassword();
-            datos[4] = password;
+            datos[5] = password;
             modelo.addRow(datos);
         }
         t.setModel(modelo);

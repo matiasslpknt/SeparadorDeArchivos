@@ -10,6 +10,7 @@ public class Consorcio {
     private String directorioDescargadoIndices;
     private String directorioDescargadoMora;
     private String directorioDescargadoLiquidacion;
+    private String idConsorcioWeb;
 
     public int getId() {
         return id;
@@ -81,5 +82,13 @@ public class Consorcio {
 
     public void setUsuarioFtp(UsuarioFtp usuarioFtp) {
         this.usuarioFtp = usuarioFtp;
+    }
+
+    public String getIdConsorcioWeb() {
+        return idConsorcioWeb;
+    }
+
+    public void setIdConsorcioWeb(String idConsorcioWeb) {
+        this.idConsorcioWeb = idConsorcioWeb;
     }
 }

@@ -19,8 +19,16 @@ public class ServicioDTO2 {
     private String Origen;
     private String idServicioPadre;
     private String TimeStamp;
+    private String idservicioxconsorcio;
+    private String idestado;
+    private String imagen1;
+    private String imagen2;
+    private String imagen3;
+    private String idnewsletter;
     private String servicios_tipo_ticket;
     private String prioridad;
+    private String action;
+    private String object;
 
     public String getIdservicio() {
         return idservicio;
@@ -154,6 +162,54 @@ public class ServicioDTO2 {
         return TimeStamp;
     }
 
+    public String getIdservicioxconsorcio() {
+        return idservicioxconsorcio;
+    }
+
+    public void setIdservicioxconsorcio(String idservicioxconsorcio) {
+        this.idservicioxconsorcio = idservicioxconsorcio;
+    }
+
+    public String getIdestado() {
+        return idestado;
+    }
+
+    public void setIdestado(String idestado) {
+        this.idestado = idestado;
+    }
+
+    public String getImagen1() {
+        return imagen1;
+    }
+
+    public void setImagen1(String imagen1) {
+        this.imagen1 = imagen1;
+    }
+
+    public String getImagen2() {
+        return imagen2;
+    }
+
+    public void setImagen2(String imagen2) {
+        this.imagen2 = imagen2;
+    }
+
+    public String getImagen3() {
+        return imagen3;
+    }
+
+    public void setImagen3(String imagen3) {
+        this.imagen3 = imagen3;
+    }
+
+    public String getIdnewsletter() {
+        return idnewsletter;
+    }
+
+    public void setIdnewsletter(String idnewsletter) {
+        this.idnewsletter = idnewsletter;
+    }
+
     @JsonProperty("TimeStamp")
     public void setTimeStamp(String timeStamp) {
         TimeStamp = timeStamp;
@@ -173,5 +229,21 @@ public class ServicioDTO2 {
 
     public void setPrioridad(String prioridad) {
         this.prioridad = prioridad;
+    }
+
+    public String getAction(){
+        return "add";
+    }
+
+    public String getObject(){
+        return "servicios";
+    }
+
+    public void setAction(String action){
+        this.action = action;
+    }
+
+    public void setObject(String object){
+        this.object = object;
     }
 }

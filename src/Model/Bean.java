@@ -13,6 +13,7 @@ public class Bean {
     private String usuario;
     private String password;
     private int consorcios_id;
+    private String idConsorcioWeb;
 
     public int getIdAdministrador() {
         return idAdministrador;
@@ -92,5 +93,13 @@ public class Bean {
 
     public void setConsorcios_id(int consorcios_id) {
         this.consorcios_id = consorcios_id;
+    }
+
+    public String getIdConsorcioWeb() {
+        return idConsorcioWeb;
+    }
+
+    public void setIdConsorcioWeb(String idConsorcioWeb) {
+        this.idConsorcioWeb = idConsorcioWeb;
     }
 }

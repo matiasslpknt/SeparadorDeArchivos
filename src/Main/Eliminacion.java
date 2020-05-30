@@ -27,6 +27,7 @@ public class Eliminacion extends javax.swing.JFrame {
     private JButton btnEliminarConsorcio;
     private JButton btnVolver;
     private JPanel panelEliminacion;
+    private JTextField txtIdConsorcioWeb;
     private AdministradorBO administradorBO = new AdministradorBO();
     private ConsorcioBO consorcioBO = new ConsorcioBO();
     private UsuarioFtpBO usuarioBO = new UsuarioFtpBO();
@@ -36,10 +37,11 @@ public class Eliminacion extends javax.swing.JFrame {
         super("COTERRANEA");
         setContentPane(panelEliminacion);
 
-        cargarComboBoxAdministrador(cmbAdministradores);
-        cargarComboBoxConsorcio(cmbConsorcios);
-        setearCamposdesdeComboBox();
-
+        boolean op1 = cargarComboBoxAdministrador(cmbAdministradores);
+        boolean op2 = cargarComboBoxConsorcio(cmbConsorcios);
+        if(op1 == true && op2 == true){
+            setearCamposdesdeComboBox();
+        }
 
         btnEliminarAdministrador.addActionListener(new ActionListener() {
             @Override
@@ -112,26 +114,35 @@ public class Eliminacion extends javax.swing.JFrame {
         txtNombreAdministrador.setText(cmbAdministradores.getSelectedItem().toString().trim());
         txtNombreConsorcio.setText(cmbConsorcios.getSelectedItem().toString().trim());
         Consorcio cons = consorcioBO.getConsorcioByNombre(cmbConsorcios.getSelectedItem().toString().trim());
+        txtIdConsorcioWeb.setText(cons.getIdConsorcioWeb());
         txtDirectorio.setText(cons.getDirectorioFtp());
         UsuarioFtp user = usuarioBO.getUsuarioFtpByIdConsorcio(cons.getId());
         txtUsuario.setText(user.getUsuario());
         txtPassword.setText(user.getPassword());
     }
 
-    public void cargarComboBoxAdministrador(JComboBox cboo) {
+    public boolean cargarComboBoxAdministrador(JComboBox cboo) {
         ArrayList<Administrador> administradores = administradorBO.getAdministradores();
-        for (Administrador ad : administradores) {
-            cboo.addItem(ad.getNombre());
+        if(administradores.size() > 0){
+            for (Administrador ad : administradores) {
+                cboo.addItem(ad.getNombre());
+            }
+            AutoCompleteDecorator.decorate(cboo);
+            return true;
         }
-        AutoCompleteDecorator.decorate(cboo);
+        return false;
     }
 
-    public void cargarComboBoxConsorcio(JComboBox cboo) {
+    public boolean cargarComboBoxConsorcio(JComboBox cboo) {
         ArrayList<Consorcio> consorcios = consorcioBO.getConsorcios();
-        for (Consorcio con : consorcios) {
-            cboo.addItem(con.getNombre());
+        if(consorcios.size() > 0){
+            for (Consorcio con : consorcios) {
+                cboo.addItem(con.getNombre());
+            }
+            AutoCompleteDecorator.decorate(cboo);
+            return true;
         }
-        AutoCompleteDecorator.decorate(cboo);
+        return false;
     }
 
     public boolean validarNombreAdministrador() {

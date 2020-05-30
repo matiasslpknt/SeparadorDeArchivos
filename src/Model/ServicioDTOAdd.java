@@ -2,9 +2,9 @@ package Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ServicioDTO {
+public class ServicioDTOAdd {
     private String success;
-    private ServicioDTO2[] servicios;
+    private ServicioDTO2 servicios;
     private String totalRecordCount;
     private String version;
 
@@ -17,11 +17,11 @@ public class ServicioDTO {
         this.success = success;
     }
 
-    public ServicioDTO2[] getServicios() {
+    public ServicioDTO2 getServicios() {
         return servicios;
     }
 
-    public void setServicios(ServicioDTO2[] servicios) {
+    public void setServicios(ServicioDTO2 servicios) {
         this.servicios = servicios;
     }
 

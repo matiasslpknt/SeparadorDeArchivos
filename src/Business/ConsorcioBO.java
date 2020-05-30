@@ -26,12 +26,12 @@ public class ConsorcioBO {
     public ArrayList<Consorcio> getConsorciosConNombre(String nombre) {
         return daoConsorcio.getConsorciosConNombre(nombre);
     }
-    public void guardar(String nombre, String directorio, int idAdministrador) {
-        daoConsorcio.guardar(nombre, directorio, idAdministrador);
+    public void guardar(String nombre, String directorio, int idAdministrador, String idConsorcioWeb) {
+        daoConsorcio.guardar(nombre, directorio, idAdministrador, idConsorcioWeb);
     }
 
-    public void modificar(String nombre, String directorioFtp, int id) {
-        daoConsorcio.modificar(nombre, directorioFtp, id);
+    public void modificar(String nombre, String directorioFtp, int id, String idConsorcioWeb) {
+        daoConsorcio.modificar(nombre, directorioFtp, id, idConsorcioWeb);
     }
 
     public void eliminar(int idConsorcio) {
