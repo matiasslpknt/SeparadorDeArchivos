@@ -296,8 +296,10 @@ public class Principal extends javax.swing.JFrame {
                 String mesAnterior = getNombreCarpetaInternaMesAnterior(getFechaHoy());
                 String observacionNueva = "";
                 String idAdministrador = servicioDTO.getServicios()[0].getIdAdministrador();
-                if (observacion.contains(mesAnterior)) {
+                if (observacion.contains(mesAnterior) && observacion.isEmpty() == false) {
                     observacionNueva = observacion.replace(mesAnterior, mesCurso);
+                } else {
+                    observacionNueva = "";
                 }
                 System.out.println(observacionNueva);
                 ServicioDTO2 serv = new ServicioDTO2();
@@ -392,7 +394,14 @@ public class Principal extends javax.swing.JFrame {
 
     public void subirMasivamente() {
         int tamanio = administradores.size();
-        double prog = 22 / tamanio;
+        double prog = 0;
+        if(tamanio > 0){
+            prog = 20 / tamanio;
+        }
+        else{
+            prog = 20 / 1;
+        }
+
         for (Administrador a : administradores) {
             String dirFTP = a.getConsorcios().get(0).getDirectorioFtp();
             String usr = a.getConsorcios().get(0).getUsuarioFtp().getUsuario();
@@ -632,7 +641,13 @@ public class Principal extends javax.swing.JFrame {
 
     public void descargaMasiva(String tipoArchivo) {
         int tamanio = administradores.size();
-        double prog = 20 / tamanio;
+        double prog = 0;
+        if(tamanio > 0){
+            prog = 20 / tamanio;
+        }
+        else{
+            prog = 20 / 1;
+        }
         for (Administrador admin : administradores) {
             String url = admin.getConsorcios().get(0).getDirectorioFtp() + getNombreCarpetaInternaMesAnterior(getFechaHoy());
             String usuario = admin.getConsorcios().get(0).getUsuarioFtp().getUsuario();
@@ -689,7 +704,7 @@ public class Principal extends javax.swing.JFrame {
         boolean existeCarpeta = false;
         for (String a : archivos) {
             String[] partes = a.split("/");
-            if (partes[partes.length - 1].trim().equals("testMatias")) { //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            if (partes[partes.length - 1].trim().equals(getNombreCarpetaMesEnCurso())) { //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 existeCarpeta = true;
                 break;
             }
@@ -718,7 +733,7 @@ public class Principal extends javax.swing.JFrame {
             try {
                 client.connect(server);
                 client.login(user, pass);
-                String nuevoDirectorio = destino + "testMatias"; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String nuevoDirectorio = destino + getNombreCarpetaMesEnCurso(); //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 client.makeDirectory(nuevoDirectorio);
 
                 for (String miArchivo : archivosSubir) {
@@ -735,9 +750,9 @@ public class Principal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Problemas de conexión subiendo archivos. Intente nuevamente más tarde.");
             }
         } else {
-            ArrayList<String> archivosEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTPConSplit(url + "testMatias", user, pass, "pdf");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
-            ArrayList<String> archivosMDBEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + "testMatias", user, pass, "mdb");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
-            ArrayList<String> archivosASPEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + "testMatias", user, pass, "asp");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            ArrayList<String> archivosEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTPConSplit(url + getNombreCarpetaMesEnCurso(), user, pass, "pdf");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            ArrayList<String> archivosMDBEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + getNombreCarpetaMesEnCurso(), user, pass, "mdb");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            ArrayList<String> archivosASPEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + getNombreCarpetaMesEnCurso(), user, pass, "asp");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
             for (String miArchivo : archivosMDBEnCarpetaFTP) {
                 archivosEnCarpetaFTP.add(miArchivo);
             }
@@ -761,7 +776,7 @@ public class Principal extends javax.swing.JFrame {
             for (String g : archivosSubir) {
                 String[] lasPartes = parsearBarraEscape(g).split("/");
                 String elNombre = lasPartes[lasPartes.length - 1];
-                String nuevoDirectorio = destino + "testMatias"; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String nuevoDirectorio = destino + getNombreCarpetaMesEnCurso(); //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 upload(server, nuevoDirectorio + "/" + elNombre, user, pass, g, miProgreso, tamanio, numero);
                 numero++;
             }
@@ -1213,39 +1228,20 @@ public class Principal extends javax.swing.JFrame {
 
     private ArrayList<Administrador> getAdministradoresEnDirectorio(String directorio) {
         ArrayList<String> administradoresDescargados = getAdministradoresEnDirectorioPlano(directorio);
-        //
-        System.out.println("administradoresDescargados:");
         for (String s : administradoresDescargados) {
             System.out.println(s);
         }
-        //
         ArrayList<Administrador> adminis = new ArrayList<Administrador>();
-
         for (int i = 0; i < administradoresDescargados.size(); i++) {
             Administrador adm = administradorBO.getAdministradorByNombre(administradoresDescargados.get(i));
-            //
-            System.out.println("adm: ");
-            System.out.println(adm.getNombre());
-            //
             if (adm.getNombre() != null) {
                 adminis.add(adm);
             }
         }
-
         for (int i = 0; i < adminis.size(); i++) {
             ArrayList<Consorcio> consorcios = consorcioBO.getConsorciosByIdAdministrador(adminis.get(i).getId());
-            //
-            System.out.println("consorcios: ");
-            for (Consorcio s : consorcios) {
-                System.out.println(s.getNombre());
-            }
-            //
             for (int k = 0; k < consorcios.size(); k++) {
                 UsuarioFtp us = usuarioFtoBO.getUsuarioFtpByIdConsorcio(consorcios.get(k).getId());
-                //
-                System.out.println("us: ");
-                System.out.println(us.getUsuario());
-                //
                 consorcios.get(k).setUsuarioFtp(us);
             }
             adminis.get(i).setConsorcios(consorcios);
