@@ -252,10 +252,10 @@ public class Principal extends javax.swing.JFrame {
             System.out.println();
             System.out.println("Subiendo archivos:");
             actualizarLabelProgreso("Subiendo archivos...");
-            //subirMasivamente();
+            subirMasivamente();
             System.out.println("Actualizando Web");
             actualizarLabelProgreso("Actualizando web...");
-            //actualizarWeb();
+            actualizarWeb();
             System.out.println();
             progreso = 100;
             actualizarProgressBar();
