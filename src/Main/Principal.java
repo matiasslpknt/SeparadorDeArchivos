@@ -151,9 +151,9 @@ public class Principal extends javax.swing.JFrame {
             generarCarpetasParaPoderDescargarDelFtp();
             progreso += 5;
             actualizarProgressBar();
-            System.out.println("Descargando archivos PDF:");
-            actualizarLabelProgreso("Descargando archivos PDF:");
-            descargaMasiva("pdf");
+//            System.out.println("Descargando archivos PDF:");
+//            actualizarLabelProgreso("Descargando archivos PDF:");
+//            descargaMasiva("pdf");
             System.out.println("Generando directorios de salida...");
             actualizarLabelProgreso("Generando directorios de salida...");
             System.out.println();
@@ -255,7 +255,7 @@ public class Principal extends javax.swing.JFrame {
             subirMasivamente();
             System.out.println("Actualizando Web");
             actualizarLabelProgreso("Actualizando web...");
-            actualizarWeb();
+            //actualizarWeb();
             System.out.println();
             progreso = 100;
             actualizarProgressBar();
@@ -602,7 +602,13 @@ public class Principal extends javax.swing.JFrame {
         ArrayList<Administrador> misAdmins = administradorBO.getAdministradores();
         for (String archivo : archivosftp) {
             for (Administrador adm : misAdmins) {
-                if (pdfReader.leerDeUnPdf(archivo, adm.getNombre())) {
+                String nombreCapitalize = "";
+                String[] compos = adm.getNombre().split(" ");
+                for(int h = 0; h < compos.length; h++){
+                    nombreCapitalize += compos[h].substring(0,1).toUpperCase() + compos[h].substring(1).toLowerCase() + " ";
+                }
+                nombreCapitalize = nombreCapitalize.trim();
+                if (pdfReader.leerDeUnPdf(archivo, adm.getNombre()) || pdfReader.leerDeUnPdf(archivo, nombreCapitalize)) {
                     boolean b = checkearSiExisteDirectorioEnDescargas(adm.getNombre());
                     String dir = directorioDescargas + adm.getNombre();
                     if (b == false) {
@@ -704,7 +710,7 @@ public class Principal extends javax.swing.JFrame {
         boolean existeCarpeta = false;
         for (String a : archivos) {
             String[] partes = a.split("/");
-            if (partes[partes.length - 1].trim().equals(getNombreCarpetaMesEnCurso())) { //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            if (partes[partes.length - 1].trim().equals("testMatias")) { //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 existeCarpeta = true;
                 break;
             }
@@ -733,7 +739,7 @@ public class Principal extends javax.swing.JFrame {
             try {
                 client.connect(server);
                 client.login(user, pass);
-                String nuevoDirectorio = destino + getNombreCarpetaMesEnCurso(); //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String nuevoDirectorio = destino + "testMatias"; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 client.makeDirectory(nuevoDirectorio);
 
                 for (String miArchivo : archivosSubir) {
@@ -750,9 +756,9 @@ public class Principal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Problemas de conexión subiendo archivos. Intente nuevamente más tarde.");
             }
         } else {
-            ArrayList<String> archivosEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTPConSplit(url + getNombreCarpetaMesEnCurso(), user, pass, "pdf");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
-            ArrayList<String> archivosMDBEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + getNombreCarpetaMesEnCurso(), user, pass, "mdb");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
-            ArrayList<String> archivosASPEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + getNombreCarpetaMesEnCurso(), user, pass, "asp");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            ArrayList<String> archivosEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTPConSplit(url + "testMatias", user, pass, "pdf");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            ArrayList<String> archivosMDBEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + "testMatias", user, pass, "mdb");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            ArrayList<String> archivosASPEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + "testMatias", user, pass, "asp");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
             for (String miArchivo : archivosMDBEnCarpetaFTP) {
                 archivosEnCarpetaFTP.add(miArchivo);
             }
@@ -776,7 +782,7 @@ public class Principal extends javax.swing.JFrame {
             for (String g : archivosSubir) {
                 String[] lasPartes = parsearBarraEscape(g).split("/");
                 String elNombre = lasPartes[lasPartes.length - 1];
-                String nuevoDirectorio = destino + getNombreCarpetaMesEnCurso(); //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String nuevoDirectorio = destino + "testMatias"; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 upload(server, nuevoDirectorio + "/" + elNombre, user, pass, g, miProgreso, tamanio, numero);
                 numero++;
             }
