@@ -34,6 +34,7 @@ public class Carga extends javax.swing.JFrame {
         setContentPane(panelCarga);
 
         cargarComboBoxAdministrador(cmbAdministradores);
+        cmbAdministradores.setSelectedItem("--Seleccione--");
 
         btnGuardarAdministrador.addActionListener(new ActionListener() {
             @Override
@@ -58,7 +59,7 @@ public class Carga extends javax.swing.JFrame {
         btnGuardarConsorcio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (txtNombreConsorcio.getText().trim().equals("") || txtDirectorio.getText().trim().equals("") || txtUsuario.getText().trim().equals("") || txtPassword.getText().trim().equals("") || txtIdConsorcio.getText().trim().equals("")) {
+                if (txtNombreConsorcio.getText().trim().equals("") || txtDirectorio.getText().trim().equals("") || txtUsuario.getText().trim().equals("") || txtPassword.getText().trim().equals("") || txtIdConsorcio.getText().trim().equals("") || cmbAdministradores.getSelectedItem().toString().equals("--Seleccione--")) {
                     JOptionPane.showMessageDialog(null, "Complete todos los campos del consorcio.");
                 } else {
                     if (validarNombreConsorcio()) {

@@ -6,6 +6,8 @@ import Model.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,6 +37,7 @@ public class Principal extends javax.swing.JFrame {
     private JComboBox cmbEstilo;
     private JCheckBox chkFinMes;
     private JLabel txtProgreso;
+    private JCheckBox chkSubidaDirecta;
 
     private final String pathProyecto = System.getProperty("user.dir");
     private final String directorioFtp = pathProyecto + "\\archivos\\ftp\\";
@@ -62,11 +65,27 @@ public class Principal extends javax.swing.JFrame {
         chkFinMes.setSelected(false);
         eliminarCarpetasFTP(directorioFtp);
         eliminarCarpetasFTP(directorioSalida);
+        cmbEstilo.setSelectedItem("--Seleccione--");
+        chkSubidaDirecta.setSelected(false);
+        chkSubidaDirecta.setVisible(false);
 
         btnEjecutar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                main();
+                if (cmbEstilo.getSelectedItem().toString().equals("--Seleccione--")) {
+                    JOptionPane.showMessageDialog(null, "Seleccione un estilo.");
+                } else {
+                    if (chkSubidaDirecta.isSelected()) {
+                        if (cmbEstilo.getSelectedItem().toString().equals("CASAS DIAZ")) {
+                            mainCasasDiaz();
+                        } else if (cmbEstilo.getSelectedItem().toString().equals("ZIDARICH") || cmbEstilo.getSelectedItem().toString().equals("CUADRADO")) {
+                            main2();
+                        }
+                    } else {
+                        main();
+                    }
+
+                }
             }
         });
 
@@ -116,6 +135,24 @@ public class Principal extends javax.swing.JFrame {
                 dispose();
             }
         });
+        cmbEstilo.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (cmbEstilo.getSelectedItem().toString().equals("CASAS DIAZ")) {
+                    chkSubidaDirecta.setVisible(true);
+                    chkSubidaDirecta.setSelected(false);
+                    chkSubidaDirecta.setEnabled(true);
+                } else if (cmbEstilo.getSelectedItem().toString().equals("ZIDARICH") || cmbEstilo.getSelectedItem().toString().equals("CUADRADO")) {
+                    chkSubidaDirecta.setVisible(true);
+                    chkSubidaDirecta.setSelected(true);
+                    chkSubidaDirecta.setEnabled(false);
+                } else {
+                    chkSubidaDirecta.setVisible(false);
+                    chkSubidaDirecta.setSelected(false);
+                    chkSubidaDirecta.setEnabled(false);
+                }
+            }
+        });
     }
 
     public void main() {
@@ -151,9 +188,11 @@ public class Principal extends javax.swing.JFrame {
             generarCarpetasParaPoderDescargarDelFtp();
             progreso += 5;
             actualizarProgressBar();
-//            System.out.println("Descargando archivos PDF:");
-//            actualizarLabelProgreso("Descargando archivos PDF:");
-//            descargaMasiva("pdf");
+            if (!cmbEstilo.getSelectedItem().toString().equals("CASAS DIAZ")) {
+                System.out.println("Descargando archivos PDF:");
+                actualizarLabelProgreso("Descargando archivos PDF:");
+                descargaMasiva("pdf");
+            }
             System.out.println("Generando directorios de salida...");
             actualizarLabelProgreso("Generando directorios de salida...");
             System.out.println();
@@ -284,6 +323,16 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    public void mainCasasDiaz() {
+        subidaDirecta();
+        actualizarLabelProgreso("FINALIZADO!!!");
+        JOptionPane.showMessageDialog(null, "FINALIZADO!!!");
+    }
+
+    public void main2() {
+        System.out.println("main2");
+    }
+
     public void actualizarWeb() {
         for (Administrador admin : administradores) {
             for (Consorcio cons : admin.getConsorcios()) {
@@ -395,10 +444,9 @@ public class Principal extends javax.swing.JFrame {
     public void subirMasivamente() {
         int tamanio = administradores.size();
         double prog = 0;
-        if(tamanio > 0){
+        if (tamanio > 0) {
             prog = 20 / tamanio;
-        }
-        else{
+        } else {
             prog = 20 / 1;
         }
 
@@ -407,6 +455,27 @@ public class Principal extends javax.swing.JFrame {
             String usr = a.getConsorcios().get(0).getUsuarioFtp().getUsuario();
             String pass = a.getConsorcios().get(0).getUsuarioFtp().getPassword();
             uploadFileByFTP(dirFTP, usr, pass, a.getNombre(), prog);
+        }
+    }
+
+    public void subidaDirecta() {
+        actualizarProgressBarCero();
+        ArrayList<String> archivos = getArchivos(directorioDescargas, "pdf");
+        int septimoParam = archivos.size();
+        int contador = 1;
+        for (String arch : archivos) {
+            arch = parsearBarraEscape(arch);
+            String partes[] = arch.split("/");
+            String ultimoNombre = partes[partes.length - 1];
+            String primerParam = "ftp.casasdiaz.com.ar";
+            String segundoParam = "public_html/Expensas/" + "testMatias" + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            String tercerParam = "casasdiaz";
+            String cuartoParam = "EzZg2NdAgWv8";
+            String quintoParam = arch;
+            Double sextoParam = 100.0 / archivos.size();
+            int octavoParam = contador;
+            upload(primerParam, segundoParam, tercerParam, cuartoParam, quintoParam, sextoParam, septimoParam, octavoParam);
+            contador++;
         }
     }
 
@@ -528,8 +597,8 @@ public class Principal extends javax.swing.JFrame {
     public void cargarComboBoxEstilo(JComboBox cboo) {
         cboo.addItem("MANZUR");
         cboo.addItem("CASAS DIAZ");
-        cboo.addItem("PAGANI");
-        cboo.setSelectedItem("MANZUR");
+        cboo.addItem("ZIDARICH");
+        cboo.addItem("CUADRADO");
         AutoCompleteDecorator.decorate(cboo);
     }
 
@@ -597,6 +666,11 @@ public class Principal extends javax.swing.JFrame {
         progressBar.update(progressBar.getGraphics());
     }
 
+    public void actualizarProgressBarCero() {
+        progressBar.setValue(0);
+        progressBar.update(progressBar.getGraphics());
+    }
+
     public void reacomodarArchivosDescargados() {
         ArrayList<String> archivosftp = getArchivos(directorioDescargas, "pdf");
         ArrayList<Administrador> misAdmins = administradorBO.getAdministradores();
@@ -604,8 +678,8 @@ public class Principal extends javax.swing.JFrame {
             for (Administrador adm : misAdmins) {
                 String nombreCapitalize = "";
                 String[] compos = adm.getNombre().split(" ");
-                for(int h = 0; h < compos.length; h++){
-                    nombreCapitalize += compos[h].substring(0,1).toUpperCase() + compos[h].substring(1).toLowerCase() + " ";
+                for (int h = 0; h < compos.length; h++) {
+                    nombreCapitalize += compos[h].substring(0, 1).toUpperCase() + compos[h].substring(1).toLowerCase() + " ";
                 }
                 nombreCapitalize = nombreCapitalize.trim();
                 if (pdfReader.leerDeUnPdf(archivo, adm.getNombre()) || pdfReader.leerDeUnPdf(archivo, nombreCapitalize)) {
@@ -648,10 +722,9 @@ public class Principal extends javax.swing.JFrame {
     public void descargaMasiva(String tipoArchivo) {
         int tamanio = administradores.size();
         double prog = 0;
-        if(tamanio > 0){
+        if (tamanio > 0) {
             prog = 20 / tamanio;
-        }
-        else{
+        } else {
             prog = 20 / 1;
         }
         for (Administrador admin : administradores) {
@@ -790,6 +863,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public void upload(String server, String destino, String user, String pass, String localPath, double miProgreso, int tamanio, int numero) {
+        System.out.println("entro a upload");
         int port = 21;
         FTPClient ftpClient = new FTPClient();
         try {
@@ -1020,10 +1094,6 @@ public class Principal extends javax.swing.JFrame {
             textoExpensa = "Importes sobre los que se calcula la expensa";
             textoLiquidacion = "GASTOS PRESUPUESTADOS A RECAUDAR";
             textoMora = "DETALLE DE MOROSOS";
-        } else if (cmbEstilo.getSelectedItem().toString().equals("PAGANI")) {
-            textoExpensa = "Expensas Extraord.:";
-            textoLiquidacion = "DETALLE DE GASTOS";
-            textoMora = "DETALLE DE MOROSOS";
         }
         String nombreCarpetaMesAnterior = getNombreCarpetaInternaMesAnterior(getFechaHoy());
         ArrayList<Administrador> administradoresFtp = new ArrayList<Administrador>();
@@ -1182,10 +1252,6 @@ public class Principal extends javax.swing.JFrame {
         } else if (cmbEstilo.getSelectedItem().toString().equals("CASAS DIAZ")) {
             textoExpensa = "Importes sobre los que se calcula la expensa";
             textoLiquidacion = "GASTOS PRESUPUESTADOS A RECAUDAR";
-            textoMora = "DETALLE DE MOROSOS";
-        } else if (cmbEstilo.getSelectedItem().toString().equals("PAGANI")) {
-            textoExpensa = "Expensas Extraord.:";
-            textoLiquidacion = "DETALLE DE GASTOS";
             textoMora = "DETALLE DE MOROSOS";
         }
         //para cada administrador entramos en la carpeta de descarga y obtenemos el nombre de cada archivo correspondiente
