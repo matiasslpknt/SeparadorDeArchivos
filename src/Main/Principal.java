@@ -79,7 +79,7 @@ public class Principal extends javax.swing.JFrame {
                         if (cmbEstilo.getSelectedItem().toString().equals("CASAS DIAZ")) {
                             mainCasasDiaz();
                         } else if (cmbEstilo.getSelectedItem().toString().equals("ZIDARICH") || cmbEstilo.getSelectedItem().toString().equals("CUADRADO")) {
-                            main2();
+                            mainZidarichCuadrado();
                         }
                     } else {
                         main();
@@ -159,7 +159,6 @@ public class Principal extends javax.swing.JFrame {
         System.out.println();
         System.out.println("Moviendo archivos descargados: ");
         actualizarLabelProgreso("Moviendo archivos descargados: ");
-        super.update(this.getGraphics());
         reacomodarArchivosDescargados();
         System.out.println();
         System.out.println("Obteniendo administradores");
@@ -324,13 +323,119 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public void mainCasasDiaz() {
-        subidaDirecta();
+        String urlAlt = "ftp.casasdiaz.com.ar/public_html/Expensas/";
+        String usrAlt = "casasdiaz";
+        String passAlt = "EzZg2NdAgWv8";
+        crearCarpetaEnServidorFTP(urlAlt,usrAlt, passAlt);
+        subidaDirectaCasasDiaz();
         actualizarLabelProgreso("FINALIZADO!!!");
         JOptionPane.showMessageDialog(null, "FINALIZADO!!!");
     }
 
-    public void main2() {
-        System.out.println("main2");
+    public void mainZidarichCuadrado() {
+        String urlAlt = "";
+        String usrAlt = "";
+        String passAlt = "";
+        Administrador adminCargado = new Administrador();
+        ArrayList<Consorcio> consCargados = new ArrayList<Consorcio>();
+        ArrayList<Consorcio> listaActualizarWeb = new ArrayList<Consorcio>();
+        String nombreAdmin = "";
+        if(cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")){
+            urlAlt = "ftp.coterranea.net/httpdocs/imagendigital/Zidarich/Expensas/";
+            usrAlt = "coterranea.net";
+            passAlt = "CO1181@nea.ar";
+            nombreAdmin = "ZIDARICH";
+        } if(cmbEstilo.getSelectedItem().toString().equals("CUADRADO")){
+            urlAlt = "ftp.admcuadrado.com.ar/httpdocs/Expensas/";
+            usrAlt = "admcuadrado.com";
+            passAlt = "AD1056@.com.ar";
+            nombreAdmin = "CUADRADO";
+        }
+
+        System.out.println();
+        ArrayList<String> archivos = getArchivos(directorioDescargas, "pdf");
+        ArrayList<String> archivos2 = getArchivos(directorioDescargas, "PDF");
+        for(String aaa : archivos2){
+            archivos.add(aaa);
+        }
+        adminCargado = administradorBO.getAdministradorByNombre(nombreAdmin);
+        consCargados = consorcioBO.getConsorciosByIdAdministrador(adminCargado.getId());
+        for(Consorcio cons : consCargados){
+            for(String arch : archivos){
+                if(pdfReader.leerDeUnPdf(arch, cons.getNombre())){
+                    boolean bande = false;
+                    for(Consorcio c : listaActualizarWeb){
+                        if(c.getNombre().equals(cons.getNombre())){
+                            bande = true;
+                            break;
+                        }
+                    }
+                    if(bande == false){
+                        listaActualizarWeb.add(cons);
+                    }
+                }
+            }
+        }
+
+        for (Consorcio cons : listaActualizarWeb) {
+            String idConsorcioWeb = cons.getIdConsorcioWeb();
+            ServicioDTO servicioDTO = apiServices.listService(idConsorcioWeb);
+            String miFecha = parsearFechaHoyParaWeb();
+            String observacion = servicioDTO.getServicios()[0].getObservacion();
+            System.out.println(observacion);
+            String mesCurso = getNombreCarpetaMesEnCurso();
+            String mesAnterior = getNombreCarpetaInternaMesAnterior(getFechaHoy());
+            String observacionNueva = "";
+            String idAdministrador = servicioDTO.getServicios()[0].getIdAdministrador();
+            if (observacion.contains(mesAnterior) && observacion.isEmpty() == false) {
+                observacionNueva = observacion.replace(mesAnterior, mesCurso);
+            } else {
+                observacionNueva = "";
+            }
+            System.out.println(observacionNueva);
+            ServicioDTO2 serv = new ServicioDTO2();
+            serv.setIdTipoServicio("5");
+            serv.setResumen("Gastos " + getNombreMes() + " " + getAnioASubir());
+            serv.setIdCountry(idConsorcioWeb);
+            serv.setIdAdministrador(idAdministrador);
+            serv.setObservacion(observacionNueva);
+            serv.setFechaDesde(miFecha);
+            serv.setFechaHasta(miFecha);
+            serv.setFechaAlta(miFecha);
+            serv.setRespondido("SI");
+            serv.setFechaRespondido(miFecha);
+            serv.setOrigen("ADMINISTRADOR");
+            serv.setIdServicioPadre("0");
+            serv.setIdestado("0");
+            serv.setServicios_tipo_ticket("1");
+            serv.setPrioridad("4-BAJA");
+            serv.setAction("add");
+            serv.setObject("servicios");
+            ServicioDTOAdd response = apiServices.addService(serv);
+            if (response.getSucces().equals(false)) {
+                consorciosFallidosWeb.add(idConsorcioWeb);
+            }
+        }
+        crearCarpetaEnServidorFTP(urlAlt,usrAlt, passAlt);
+        if(cmbEstilo.getSelectedItem().toString().equals("CUADRADO")){
+            subidaDirectaCuadrado();
+        }else if(cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")){
+            subidaDirectaZidarich(listaActualizarWeb);
+        }
+
+        if (consorciosFallidosWeb.size() > 0) {
+            String consorciosFallados = "";
+            for (String idCons : consorciosFallidosWeb) {
+                consorciosFallados += idCons + ", ";
+            }
+            consorciosFallados = consorciosFallados.trim();
+            consorciosFallados = consorciosFallados.substring(0, consorciosFallados.length() - 2);
+            actualizarLabelProgreso("FINALIZADO!!! Algunos consorcios fallaron en la actualizacion web: " + consorciosFallados);
+            JOptionPane.showMessageDialog(null, "FINALIZADO!!! Algunos consorcios fallaron en la actualizacion web: " + consorciosFallados);
+        } else {
+            actualizarLabelProgreso("FINALIZADO!!!");
+            JOptionPane.showMessageDialog(null, "FINALIZADO!!!");
+        }
     }
 
     public void actualizarWeb() {
@@ -458,7 +563,7 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    public void subidaDirecta() {
+    public void subidaDirectaCasasDiaz() {
         actualizarProgressBarCero();
         ArrayList<String> archivos = getArchivos(directorioDescargas, "pdf");
         int septimoParam = archivos.size();
@@ -476,6 +581,92 @@ public class Principal extends javax.swing.JFrame {
             int octavoParam = contador;
             upload(primerParam, segundoParam, tercerParam, cuartoParam, quintoParam, sextoParam, septimoParam, octavoParam);
             contador++;
+        }
+    }
+
+    public void subidaDirectaCuadrado() {
+        System.out.println();
+        actualizarProgressBarCero();
+        ArrayList<String> archivos = getArchivos(directorioDescargas, "pdf");
+        ArrayList<String> archivos2 = getArchivos(directorioDescargas, "PDF");
+        for(String aaa : archivos2){
+            archivos.add(aaa);
+        }
+        int septimoParam = archivos.size();
+        int contador = 1;
+        for (String arch : archivos) {
+            arch = parsearBarraEscape(arch);
+            String partes[] = arch.split("/");
+            String ultimoNombre = partes[partes.length - 1];
+            if(cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")){
+                String primerParam = "ftp.coterranea.net";
+                String segundoParam = "/httpdocs/imagendigital/Zidarich/Expensas/" + "testMatias" + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String tercerParam = "coterranea.net";
+                String cuartoParam = "CO1181@nea.ar";
+                String quintoParam = arch;
+                Double sextoParam = 100.0 / archivos.size();
+                int octavoParam = contador;
+                upload(primerParam, segundoParam, tercerParam, cuartoParam, quintoParam, sextoParam, septimoParam, octavoParam);
+                contador++;
+            }else if(cmbEstilo.getSelectedItem().toString().equals("CUADRADO")){
+                String primerParam = "ftp.admcuadrado.com.ar";
+                String segundoParam = "/httpdocs/Expensas/" + "testMatias" + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String tercerParam = "admcuadrado.com";
+                String cuartoParam = "AD1056@.com.ar";
+                String quintoParam = arch;
+                Double sextoParam = 100.0 / archivos.size();
+                int octavoParam = contador;
+                upload(primerParam, segundoParam, tercerParam, cuartoParam, quintoParam, sextoParam, septimoParam, octavoParam);
+                contador++;
+            }
+
+        }
+    }
+
+    public void subidaDirectaZidarich(ArrayList<Consorcio> consorcios) {
+        System.out.println();
+        actualizarProgressBarCero();
+        ArrayList<String> archivos = getArchivos(directorioDescargas, "pdf");
+        ArrayList<String> archivos2 = getArchivos(directorioDescargas, "PDF");
+        for(String aaa : archivos2){
+            archivos.add(aaa);
+        }
+        int septimoParam = archivos.size();
+        int contador = 1;
+        for (String arch : archivos) {
+            String nombreCarpetaConsorcio = "";
+            for(Consorcio ccc : consorcios){
+                if(pdfReader.leerDeUnPdf(arch, ccc.getNombre())){
+                    nombreCarpetaConsorcio = ccc.getNombre();
+                    break;
+                }
+            }
+            arch = parsearBarraEscape(arch);
+            String partes[] = arch.split("/");
+            String ultimoNombre = partes[partes.length - 1];
+            if(cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")){
+                crearCarpetaEnServidorFTPZidarich("/httpdocs/imagendigital/Zidarich/Expensas/" + "testMatias" + "/", "coterranea.net", "CO1181@nea.ar", nombreCarpetaConsorcio); //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String primerParam = "ftp.coterranea.net";
+                String segundoParam = "/httpdocs/imagendigital/Zidarich/Expensas/" + "testMatias" + "/" + nombreCarpetaConsorcio + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String tercerParam = "coterranea.net";
+                String cuartoParam = "CO1181@nea.ar";
+                String quintoParam = arch;
+                Double sextoParam = 100.0 / archivos.size();
+                int octavoParam = contador;
+                upload(primerParam, segundoParam, tercerParam, cuartoParam, quintoParam, sextoParam, septimoParam, octavoParam);
+                contador++;
+            }else if(cmbEstilo.getSelectedItem().toString().equals("CUADRADO")){
+                String primerParam = "ftp.admcuadrado.com.ar";
+                String segundoParam = "/httpdocs/Expensas/" + "testMatias" + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String tercerParam = "admcuadrado.com";
+                String cuartoParam = "AD1056@.com.ar";
+                String quintoParam = arch;
+                Double sextoParam = 100.0 / archivos.size();
+                int octavoParam = contador;
+                upload(primerParam, segundoParam, tercerParam, cuartoParam, quintoParam, sextoParam, septimoParam, octavoParam);
+                contador++;
+            }
+
         }
     }
 
@@ -777,6 +968,68 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    public void crearCarpetaEnServidorFTP(String url, String user, String pass) {
+        ArrayList<String> archivos = getNombresCarpetasPDFEnDirectorioFTP(url, user, pass);
+        boolean existeCarpeta = false;
+        for (String a : archivos) {
+            String[] partes = a.split("/");
+            if (partes[partes.length - 1].trim().equals("testMatias")) { //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                existeCarpeta = true;
+                break;
+            }
+        }
+        String[] partes = url.split("/");
+        String server = partes[0];
+        String destino = "";
+        for (int i = 1; i < partes.length; i++) {
+            destino += partes[i] + "/";
+        }
+        if (existeCarpeta == false) {
+            FTPClient client = new FTPClient();//Iniciamos el cliente del FTP
+            try {
+                client.connect(server);
+                client.login(user, pass);
+                String nuevoDirectorio = destino + "testMatias"; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                client.makeDirectory(nuevoDirectorio);
+                client.disconnect();
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Problemas de conexión subiendo archivos. Intente nuevamente más tarde.");
+            }
+        }
+    }
+
+    public void crearCarpetaEnServidorFTPZidarich(String url, String user, String pass, String nombreConsorcio) {
+        ArrayList<String> archivos = getNombresCarpetasPDFEnDirectorioFTP(url, user, pass);
+        boolean existeCarpeta = false;
+        for (String a : archivos) {
+            String[] partes = a.split("/");
+            if (partes[partes.length - 1].trim().equals(nombreConsorcio)) {
+                existeCarpeta = true;
+                break;
+            }
+        }
+        String[] partes = url.split("/");
+        String server = partes[0];
+        String destino = "";
+        for (int i = 1; i < partes.length; i++) {
+            destino += partes[i] + "/";
+        }
+        if (existeCarpeta == false) {
+            FTPClient client = new FTPClient();//Iniciamos el cliente del FTP
+            try {
+                client.connect(server);
+                client.login(user, pass);
+                String nuevoDirectorio = destino + nombreConsorcio;
+                client.makeDirectory(nuevoDirectorio);
+                client.disconnect();
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Problemas de conexión subiendo archivos. Intente nuevamente más tarde.");
+            }
+        }
+    }
+
     //Sube el archivo al FTP
     public void uploadFileByFTP(String url, String user, String pass, String nombreAdministrador, double progres) {
         ArrayList<String> archivos = getNombresCarpetasPDFEnDirectorioFTP(url, user, pass);
@@ -863,7 +1116,6 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public void upload(String server, String destino, String user, String pass, String localPath, double miProgreso, int tamanio, int numero) {
-        System.out.println("entro a upload");
         int port = 21;
         FTPClient ftpClient = new FTPClient();
         try {
@@ -1300,12 +1552,12 @@ public class Principal extends javax.swing.JFrame {
 
     private ArrayList<Administrador> getAdministradoresEnDirectorio(String directorio) {
         ArrayList<String> administradoresDescargados = getAdministradoresEnDirectorioPlano(directorio);
-        for (String s : administradoresDescargados) {
-            System.out.println(s);
-        }
+        System.out.println(administradoresDescargados.size());
         ArrayList<Administrador> adminis = new ArrayList<Administrador>();
         for (int i = 0; i < administradoresDescargados.size(); i++) {
+
             Administrador adm = administradorBO.getAdministradorByNombre(administradoresDescargados.get(i));
+
             if (adm.getNombre() != null) {
                 adminis.add(adm);
             }
@@ -1328,6 +1580,10 @@ public class Principal extends javax.swing.JFrame {
     //devuelve una lista de los nombres de administradores en la carpeta de descargas(devuelve los nombres de las carpetas)
     private ArrayList<String> getAdministradoresEnDirectorioPlano(String directorio) {
         ArrayList<String> archivos = getArchivos(directorio, "pdf");
+        ArrayList<String> archivos2 = getArchivos(directorio, "PDF");
+        for(String aaa : archivos2){
+            archivos.add(aaa);
+        }
         ArrayList<String> archivosReturn = new ArrayList<String>();
         for (int i = 0; i < archivos.size(); i++) {
             String linea = parsearBarraEscape(archivos.get(i));
