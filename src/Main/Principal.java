@@ -293,7 +293,7 @@ public class Principal extends javax.swing.JFrame {
             subirMasivamente();
             System.out.println("Actualizando Web");
             actualizarLabelProgreso("Actualizando web...");
-            //actualizarWeb();
+            actualizarWeb();
             System.out.println();
             progreso = 100;
             actualizarProgressBar();
@@ -573,7 +573,7 @@ public class Principal extends javax.swing.JFrame {
             String partes[] = arch.split("/");
             String ultimoNombre = partes[partes.length - 1];
             String primerParam = "ftp.casasdiaz.com.ar";
-            String segundoParam = "public_html/Expensas/" + "testMatias" + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            String segundoParam = "public_html/Expensas/" + getNombreCarpetaMesEnCurso() + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
             String tercerParam = "casasdiaz";
             String cuartoParam = "EzZg2NdAgWv8";
             String quintoParam = arch;
@@ -600,7 +600,7 @@ public class Principal extends javax.swing.JFrame {
             String ultimoNombre = partes[partes.length - 1];
             if(cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")){
                 String primerParam = "ftp.coterranea.net";
-                String segundoParam = "/httpdocs/imagendigital/Zidarich/Expensas/" + "testMatias" + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String segundoParam = "/httpdocs/imagendigital/Zidarich/Expensas/" + getNombreCarpetaMesEnCurso() + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 String tercerParam = "coterranea.net";
                 String cuartoParam = "CO1181@nea.ar";
                 String quintoParam = arch;
@@ -610,7 +610,7 @@ public class Principal extends javax.swing.JFrame {
                 contador++;
             }else if(cmbEstilo.getSelectedItem().toString().equals("CUADRADO")){
                 String primerParam = "ftp.admcuadrado.com.ar";
-                String segundoParam = "/httpdocs/Expensas/" + "testMatias" + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String segundoParam = "/httpdocs/Expensas/" + getNombreCarpetaMesEnCurso() + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 String tercerParam = "admcuadrado.com";
                 String cuartoParam = "AD1056@.com.ar";
                 String quintoParam = arch;
@@ -645,9 +645,9 @@ public class Principal extends javax.swing.JFrame {
             String partes[] = arch.split("/");
             String ultimoNombre = partes[partes.length - 1];
             if(cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")){
-                crearCarpetaEnServidorFTPZidarich("/httpdocs/imagendigital/Zidarich/Expensas/" + "testMatias" + "/", "coterranea.net", "CO1181@nea.ar", nombreCarpetaConsorcio); //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                crearCarpetaEnServidorFTPZidarich("/httpdocs/imagendigital/Zidarich/Expensas/" + getNombreCarpetaMesEnCurso() + "/", "coterranea.net", "CO1181@nea.ar", nombreCarpetaConsorcio); //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 String primerParam = "ftp.coterranea.net";
-                String segundoParam = "/httpdocs/imagendigital/Zidarich/Expensas/" + "testMatias" + "/" + nombreCarpetaConsorcio + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String segundoParam = "/httpdocs/imagendigital/Zidarich/Expensas/" + getNombreCarpetaMesEnCurso() + "/" + nombreCarpetaConsorcio + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 String tercerParam = "coterranea.net";
                 String cuartoParam = "CO1181@nea.ar";
                 String quintoParam = arch;
@@ -657,7 +657,7 @@ public class Principal extends javax.swing.JFrame {
                 contador++;
             }else if(cmbEstilo.getSelectedItem().toString().equals("CUADRADO")){
                 String primerParam = "ftp.admcuadrado.com.ar";
-                String segundoParam = "/httpdocs/Expensas/" + "testMatias" + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String segundoParam = "/httpdocs/Expensas/" + getNombreCarpetaMesEnCurso() + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 String tercerParam = "admcuadrado.com";
                 String cuartoParam = "AD1056@.com.ar";
                 String quintoParam = arch;
@@ -920,6 +920,7 @@ public class Principal extends javax.swing.JFrame {
         }
         for (Administrador admin : administradores) {
             String url = admin.getConsorcios().get(0).getDirectorioFtp() + getNombreCarpetaInternaMesAnterior(getFechaHoy());
+            System.out.println(url);
             String usuario = admin.getConsorcios().get(0).getUsuarioFtp().getUsuario();
             String password = admin.getConsorcios().get(0).getUsuarioFtp().getPassword();
             descargarArchivosDirectorioFTP(url, usuario, password, tipoArchivo, admin.getNombre(), prog);
@@ -973,7 +974,7 @@ public class Principal extends javax.swing.JFrame {
         boolean existeCarpeta = false;
         for (String a : archivos) {
             String[] partes = a.split("/");
-            if (partes[partes.length - 1].trim().equals("testMatias")) { //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            if (partes[partes.length - 1].trim().equals(getNombreCarpetaMesEnCurso())) { //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 existeCarpeta = true;
                 break;
             }
@@ -989,7 +990,7 @@ public class Principal extends javax.swing.JFrame {
             try {
                 client.connect(server);
                 client.login(user, pass);
-                String nuevoDirectorio = destino + "testMatias"; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String nuevoDirectorio = destino + getNombreCarpetaMesEnCurso(); //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 client.makeDirectory(nuevoDirectorio);
                 client.disconnect();
             } catch (IOException e) {
@@ -1036,7 +1037,7 @@ public class Principal extends javax.swing.JFrame {
         boolean existeCarpeta = false;
         for (String a : archivos) {
             String[] partes = a.split("/");
-            if (partes[partes.length - 1].trim().equals("testMatias")) { //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            if (partes[partes.length - 1].trim().equals(getNombreCarpetaMesEnCurso())) { //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 existeCarpeta = true;
                 break;
             }
@@ -1065,7 +1066,7 @@ public class Principal extends javax.swing.JFrame {
             try {
                 client.connect(server);
                 client.login(user, pass);
-                String nuevoDirectorio = destino + "testMatias"; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String nuevoDirectorio = destino + getNombreCarpetaMesEnCurso(); //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 client.makeDirectory(nuevoDirectorio);
 
                 for (String miArchivo : archivosSubir) {
@@ -1082,9 +1083,9 @@ public class Principal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Problemas de conexión subiendo archivos. Intente nuevamente más tarde.");
             }
         } else {
-            ArrayList<String> archivosEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTPConSplit(url + "testMatias", user, pass, "pdf");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
-            ArrayList<String> archivosMDBEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + "testMatias", user, pass, "mdb");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
-            ArrayList<String> archivosASPEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + "testMatias", user, pass, "asp");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            ArrayList<String> archivosEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTPConSplit(url + getNombreCarpetaMesEnCurso(), user, pass, "pdf");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            ArrayList<String> archivosMDBEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + getNombreCarpetaMesEnCurso(), user, pass, "mdb");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+            ArrayList<String> archivosASPEnCarpetaFTP = getNombresArchvivosPDFEnDirectorioFTP(url + getNombreCarpetaMesEnCurso(), user, pass, "asp");//------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
             for (String miArchivo : archivosMDBEnCarpetaFTP) {
                 archivosEnCarpetaFTP.add(miArchivo);
             }
@@ -1108,7 +1109,7 @@ public class Principal extends javax.swing.JFrame {
             for (String g : archivosSubir) {
                 String[] lasPartes = parsearBarraEscape(g).split("/");
                 String elNombre = lasPartes[lasPartes.length - 1];
-                String nuevoDirectorio = destino + "testMatias"; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
+                String nuevoDirectorio = destino + getNombreCarpetaMesEnCurso(); //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 upload(server, nuevoDirectorio + "/" + elNombre, user, pass, g, miProgreso, tamanio, numero);
                 numero++;
             }
@@ -1183,9 +1184,6 @@ public class Principal extends javax.swing.JFrame {
         String[] arreglo = url.split("/");
         String dominio = arreglo[0];
         String directorio = "/";
-        for (int i = 1; i < arreglo.length; i++) {
-            directorio += arreglo[i] + "/";
-        }
         FtpConnector connector = new FtpConnector();
         try {
             FTPClient client = connector.connect(dominio, usuario, password);
