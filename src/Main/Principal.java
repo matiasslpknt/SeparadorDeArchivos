@@ -445,15 +445,14 @@ public class Principal extends javax.swing.JFrame {
                 ServicioDTO servicioDTO = apiServices.listService(idConsorcioWeb);
                 String miFecha = parsearFechaHoyParaWeb();
                 String observacion = servicioDTO.getServicios()[0].getObservacion();
-                System.out.println(observacion);
                 String mesCurso = getNombreCarpetaMesEnCurso();
                 String mesAnterior = getNombreCarpetaInternaMesAnterior(getFechaHoy());
                 String observacionNueva = "";
                 String idAdministrador = servicioDTO.getServicios()[0].getIdAdministrador();
-                if (observacion.contains(mesAnterior) && observacion.isEmpty() == false) {
+                if (observacion.contains(mesAnterior)) { // && observacion.isEmpty() == false
                     observacionNueva = observacion.replace(mesAnterior, mesCurso);
                 } else {
-                    observacionNueva = "";
+                    observacionNueva = observacion;
                 }
                 System.out.println(observacionNueva);
                 ServicioDTO2 serv = new ServicioDTO2();
@@ -1184,6 +1183,9 @@ public class Principal extends javax.swing.JFrame {
         String[] arreglo = url.split("/");
         String dominio = arreglo[0];
         String directorio = "/";
+        for (int i = 1; i < arreglo.length; i++) {
+            directorio += arreglo[i] + "/";
+        }
         FtpConnector connector = new FtpConnector();
         try {
             FTPClient client = connector.connect(dominio, usuario, password);
