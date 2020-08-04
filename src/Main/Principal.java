@@ -326,7 +326,7 @@ public class Principal extends javax.swing.JFrame {
         String urlAlt = "ftp.casasdiaz.com.ar/public_html/Expensas/";
         String usrAlt = "casasdiaz";
         String passAlt = "EzZg2NdAgWv8";
-        crearCarpetaEnServidorFTP(urlAlt,usrAlt, passAlt);
+        crearCarpetaEnServidorFTP(urlAlt, usrAlt, passAlt);
         subidaDirectaCasasDiaz();
         actualizarLabelProgreso("FINALIZADO!!!");
         JOptionPane.showMessageDialog(null, "FINALIZADO!!!");
@@ -340,12 +340,13 @@ public class Principal extends javax.swing.JFrame {
         ArrayList<Consorcio> consCargados = new ArrayList<Consorcio>();
         ArrayList<Consorcio> listaActualizarWeb = new ArrayList<Consorcio>();
         String nombreAdmin = "";
-        if(cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")){
+        if (cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")) {
             urlAlt = "ftp.coterranea.net/httpdocs/imagendigital/Zidarich/Expensas/";
             usrAlt = "coterranea.net";
             passAlt = "CO1181@nea.ar";
             nombreAdmin = "ZIDARICH";
-        } if(cmbEstilo.getSelectedItem().toString().equals("CUADRADO")){
+        }
+        if (cmbEstilo.getSelectedItem().toString().equals("CUADRADO")) {
             urlAlt = "ftp.admcuadrado.com.ar/httpdocs/Expensas/";
             usrAlt = "admcuadrado.com";
             passAlt = "AD1056@.com.ar";
@@ -355,22 +356,22 @@ public class Principal extends javax.swing.JFrame {
         System.out.println();
         ArrayList<String> archivos = getArchivos(directorioDescargas, "pdf");
         ArrayList<String> archivos2 = getArchivos(directorioDescargas, "PDF");
-        for(String aaa : archivos2){
+        for (String aaa : archivos2) {
             archivos.add(aaa);
         }
         adminCargado = administradorBO.getAdministradorByNombre(nombreAdmin);
         consCargados = consorcioBO.getConsorciosByIdAdministrador(adminCargado.getId());
-        for(Consorcio cons : consCargados){
-            for(String arch : archivos){
-                if(pdfReader.leerDeUnPdf(arch, cons.getNombre())){
+        for (Consorcio cons : consCargados) {
+            for (String arch : archivos) {
+                if (pdfReader.leerDeUnPdf(arch, cons.getNombre())) {
                     boolean bande = false;
-                    for(Consorcio c : listaActualizarWeb){
-                        if(c.getNombre().equals(cons.getNombre())){
+                    for (Consorcio c : listaActualizarWeb) {
+                        if (c.getNombre().equals(cons.getNombre())) {
                             bande = true;
                             break;
                         }
                     }
-                    if(bande == false){
+                    if (bande == false) {
                         listaActualizarWeb.add(cons);
                     }
                 }
@@ -416,10 +417,10 @@ public class Principal extends javax.swing.JFrame {
                 consorciosFallidosWeb.add(idConsorcioWeb);
             }
         }
-        crearCarpetaEnServidorFTP(urlAlt,usrAlt, passAlt);
-        if(cmbEstilo.getSelectedItem().toString().equals("CUADRADO")){
+        crearCarpetaEnServidorFTP(urlAlt, usrAlt, passAlt);
+        if (cmbEstilo.getSelectedItem().toString().equals("CUADRADO")) {
             subidaDirectaCuadrado();
-        }else if(cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")){
+        } else if (cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")) {
             subidaDirectaZidarich(listaActualizarWeb);
         }
 
@@ -441,6 +442,8 @@ public class Principal extends javax.swing.JFrame {
     public void actualizarWeb() {
         for (Administrador admin : administradores) {
             for (Consorcio cons : admin.getConsorcios()) {
+                System.out.println("ADMINISTRADOR: " + admin.getNombre());
+                System.out.println("CONSORCIO: " + cons.getNombre());
                 String idConsorcioWeb = cons.getIdConsorcioWeb();
                 ServicioDTO servicioDTO = apiServices.listService(idConsorcioWeb);
                 String miFecha = parsearFechaHoyParaWeb();
@@ -449,9 +452,13 @@ public class Principal extends javax.swing.JFrame {
                 String mesAnterior = getNombreCarpetaInternaMesAnterior(getFechaHoy());
                 String observacionNueva = "";
                 String idAdministrador = servicioDTO.getServicios()[0].getIdAdministrador();
-                if (observacion.contains(mesAnterior)) { // && observacion.isEmpty() == false
-                    observacionNueva = observacion.replace(mesAnterior, mesCurso);
-                } else {
+                try {
+                    if (observacion.contains(mesAnterior) && observacion.isEmpty() == false) {
+                        observacionNueva = observacion.replace(mesAnterior, mesCurso);
+                    } else {
+                        observacionNueva = observacion;
+                    }
+                } catch (Exception e) {
                     observacionNueva = observacion;
                 }
                 System.out.println(observacionNueva);
@@ -477,6 +484,8 @@ public class Principal extends javax.swing.JFrame {
                 if (response.getSucces().equals(false)) {
                     consorciosFallidosWeb.add(idConsorcioWeb);
                 }
+                System.out.println("======================================================================================");
+                System.out.println();
             }
         }
     }
@@ -588,7 +597,7 @@ public class Principal extends javax.swing.JFrame {
         actualizarProgressBarCero();
         ArrayList<String> archivos = getArchivos(directorioDescargas, "pdf");
         ArrayList<String> archivos2 = getArchivos(directorioDescargas, "PDF");
-        for(String aaa : archivos2){
+        for (String aaa : archivos2) {
             archivos.add(aaa);
         }
         int septimoParam = archivos.size();
@@ -597,7 +606,7 @@ public class Principal extends javax.swing.JFrame {
             arch = parsearBarraEscape(arch);
             String partes[] = arch.split("/");
             String ultimoNombre = partes[partes.length - 1];
-            if(cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")){
+            if (cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")) {
                 String primerParam = "ftp.coterranea.net";
                 String segundoParam = "/httpdocs/imagendigital/Zidarich/Expensas/" + getNombreCarpetaMesEnCurso() + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 String tercerParam = "coterranea.net";
@@ -607,7 +616,7 @@ public class Principal extends javax.swing.JFrame {
                 int octavoParam = contador;
                 upload(primerParam, segundoParam, tercerParam, cuartoParam, quintoParam, sextoParam, septimoParam, octavoParam);
                 contador++;
-            }else if(cmbEstilo.getSelectedItem().toString().equals("CUADRADO")){
+            } else if (cmbEstilo.getSelectedItem().toString().equals("CUADRADO")) {
                 String primerParam = "ftp.admcuadrado.com.ar";
                 String segundoParam = "/httpdocs/Expensas/" + getNombreCarpetaMesEnCurso() + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 String tercerParam = "admcuadrado.com";
@@ -627,15 +636,15 @@ public class Principal extends javax.swing.JFrame {
         actualizarProgressBarCero();
         ArrayList<String> archivos = getArchivos(directorioDescargas, "pdf");
         ArrayList<String> archivos2 = getArchivos(directorioDescargas, "PDF");
-        for(String aaa : archivos2){
+        for (String aaa : archivos2) {
             archivos.add(aaa);
         }
         int septimoParam = archivos.size();
         int contador = 1;
         for (String arch : archivos) {
             String nombreCarpetaConsorcio = "";
-            for(Consorcio ccc : consorcios){
-                if(pdfReader.leerDeUnPdf(arch, ccc.getNombre())){
+            for (Consorcio ccc : consorcios) {
+                if (pdfReader.leerDeUnPdf(arch, ccc.getNombre())) {
                     nombreCarpetaConsorcio = ccc.getNombre();
                     break;
                 }
@@ -643,7 +652,7 @@ public class Principal extends javax.swing.JFrame {
             arch = parsearBarraEscape(arch);
             String partes[] = arch.split("/");
             String ultimoNombre = partes[partes.length - 1];
-            if(cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")){
+            if (cmbEstilo.getSelectedItem().toString().equals("ZIDARICH")) {
                 crearCarpetaEnServidorFTPZidarich("/httpdocs/imagendigital/Zidarich/Expensas/" + getNombreCarpetaMesEnCurso() + "/", "coterranea.net", "CO1181@nea.ar", nombreCarpetaConsorcio); //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 String primerParam = "ftp.coterranea.net";
                 String segundoParam = "/httpdocs/imagendigital/Zidarich/Expensas/" + getNombreCarpetaMesEnCurso() + "/" + nombreCarpetaConsorcio + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
@@ -654,7 +663,7 @@ public class Principal extends javax.swing.JFrame {
                 int octavoParam = contador;
                 upload(primerParam, segundoParam, tercerParam, cuartoParam, quintoParam, sextoParam, septimoParam, octavoParam);
                 contador++;
-            }else if(cmbEstilo.getSelectedItem().toString().equals("CUADRADO")){
+            } else if (cmbEstilo.getSelectedItem().toString().equals("CUADRADO")) {
                 String primerParam = "ftp.admcuadrado.com.ar";
                 String segundoParam = "/httpdocs/Expensas/" + getNombreCarpetaMesEnCurso() + "/" + ultimoNombre; //------ACA CAMBIAMOS "testMatias" por getNombreCarpetaMesEnCurso() -------------------------------------------------
                 String tercerParam = "admcuadrado.com";
@@ -1581,7 +1590,7 @@ public class Principal extends javax.swing.JFrame {
     private ArrayList<String> getAdministradoresEnDirectorioPlano(String directorio) {
         ArrayList<String> archivos = getArchivos(directorio, "pdf");
         ArrayList<String> archivos2 = getArchivos(directorio, "PDF");
-        for(String aaa : archivos2){
+        for (String aaa : archivos2) {
             archivos.add(aaa);
         }
         ArrayList<String> archivosReturn = new ArrayList<String>();
