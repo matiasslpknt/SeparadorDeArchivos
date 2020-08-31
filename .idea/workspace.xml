@@ -79,6 +79,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -163,11 +164,12 @@
       <workItem from="1596472421582" duration="1238000" />
       <workItem from="1596492102286" duration="3624000" />
       <workItem from="1596571607663" duration="2072000" />
+      <workItem from="1598879557361" duration="343000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590848495629">
@@ -182,10 +184,6 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="640" y="256" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1592320352032" />
-    <state x="666" y="336" width="588" height="442" key="FileChooserDialogImpl" timestamp="1588117861730">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="666" y="336" width="588" height="442" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1588117861730" />
     <state width="1877" height="281" key="GridCell.Tab.0.bottom" timestamp="1596582687955">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -210,10 +208,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="236" height="553" key="HiddenNamespacesPopup/0.0.1920.1040@0.0.1920.1040" timestamp="1590848403976" />
-    <state x="440" y="94" key="SettingsEditor" timestamp="1588117864453">
+    <state x="440" y="94" key="SettingsEditor" timestamp="1598879664281">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="440" y="94" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1588117864453" />
+    <state x="440" y="94" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1598879664281" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1591135027326">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
