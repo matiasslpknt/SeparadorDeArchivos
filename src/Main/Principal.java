@@ -187,11 +187,11 @@ public class Principal extends javax.swing.JFrame {
             generarCarpetasParaPoderDescargarDelFtp();
             progreso += 5;
             actualizarProgressBar();
-            if (!cmbEstilo.getSelectedItem().toString().equals("CASAS DIAZ")) {
-                System.out.println("Descargando archivos PDF:");
-                actualizarLabelProgreso("Descargando archivos PDF:");
-                descargaMasiva("pdf");
-            }
+//            if (!cmbEstilo.getSelectedItem().toString().equals("CASAS DIAZ")) {
+//                System.out.println("Descargando archivos PDF:");
+//                actualizarLabelProgreso("Descargando archivos PDF:");
+//                descargaMasiva("pdf");
+//            }
             System.out.println("Generando directorios de salida...");
             actualizarLabelProgreso("Generando directorios de salida...");
             System.out.println();
@@ -266,9 +266,9 @@ public class Principal extends javax.swing.JFrame {
             System.out.println("Moviendo archivos ASP:");
             actualizarLabelProgreso("Moviendo archivos ASP...");
             moverArchivosASP();
-            System.out.println("Descargando archivos MDB:");
-            actualizarLabelProgreso("Descargando archivos MDB:");
-            descargaMasiva("mdb");
+//            System.out.println("Descargando archivos MDB:");
+//            actualizarLabelProgreso("Descargando archivos MDB:");
+//            descargaMasiva("mdb");
             System.out.println();
             System.out.println("Renombrando y moviendo archivos MDB:");
             actualizarLabelProgreso("Renombrando y moviendo archivos MDB...");
