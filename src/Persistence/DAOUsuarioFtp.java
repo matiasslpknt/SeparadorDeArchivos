@@ -11,6 +11,11 @@ public class DAOUsuarioFtp {
     ConectionBD con = new ConectionBD();
     Connection cn = con.conexion();
 
+    /**
+     * trae todos los usuarios cargados en la base.
+     *
+     * @return ArrayList<UsuarioFtp> usuarios : lista de todos los usuarios cargados
+     **/
     public ArrayList<UsuarioFtp> getUsuariosFtp()
     {
         ArrayList<UsuarioFtp> usrs = new ArrayList<UsuarioFtp>();
@@ -35,6 +40,13 @@ public class DAOUsuarioFtp {
         return usrs;
     }
 
+    /**
+     * trae un usuario por ID
+     *
+     * @param id : id usuario
+     *
+     * @return UsuarioFtp usuario : usuario buscado por id
+     **/
     public UsuarioFtp getUsuarioFtpById(int id)
     {
         String sql = "SELECT * FROM usuario WHERE id = '"+ id +"'";
@@ -56,6 +68,13 @@ public class DAOUsuarioFtp {
         return usr;
     }
 
+    /**
+     * trae un usuario por nombre de usuario
+     *
+     * @param nombre : nombre de usuario
+     *
+     * @return UsuarioFtp usuario : usuario buscado por nombre/usuario
+     **/
     public UsuarioFtp getUsuarioFtpByUsuario(String nombre)
     {
         String sql = "SELECT * FROM usuario WHERE usuario = '"+ nombre +"'";
@@ -77,6 +96,11 @@ public class DAOUsuarioFtp {
         return usr;
     }
 
+    /**
+     * trae el usuario por ID de consorcio
+     *
+     * @return UsuarioFtp usuario : usuario buscado por ID consorcio
+     **/
     public UsuarioFtp getUsuarioFtpByIdConsorcio(int id)
     {
         String sql = "SELECT * FROM usuario WHERE consorcios_id = "+ id +";";
@@ -98,6 +122,13 @@ public class DAOUsuarioFtp {
         return usr;
     }
 
+    /**
+     * guarda un nuevo usuario
+     *
+     * @param usuario : nombre de usuario
+     * @param password : contraseña de usuario
+     * @param idConsorcio : id del consorcio al que pertenece
+     **/
     public void guardar(String usuario, String password, int idConsorcio) {
         PreparedStatement pps;
         try {
@@ -112,6 +143,13 @@ public class DAOUsuarioFtp {
         }
     }
 
+    /**
+     * modifica un usuario por id de consorcio
+     *
+     * @param usuario : nombre de usuario
+     * @param password : contraseña de usuario
+     * @param idConsorcio : id del consorcio del usuario
+     **/
     public void modificar(String usuario, String password, int idConsorcio) {
         PreparedStatement pps;
         //UPDATE usuario SET usuario = 'carrarayasociad', password = 'Jk2zz14?' WHERE consorcios_id =  1;
@@ -124,6 +162,11 @@ public class DAOUsuarioFtp {
         }
     }
 
+    /**
+     * elimina un usuario por id Consorcio
+     *
+     * @param idConsorcio : id consorcio del usuario a eliminar
+     **/
     public void eliminar(int idConsorcio) {
         try {
             PreparedStatement pps = cn.prepareStatement("DELETE FROM usuario WHERE consorcios_id = '" + idConsorcio + "'");

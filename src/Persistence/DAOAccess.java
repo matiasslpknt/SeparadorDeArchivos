@@ -16,6 +16,15 @@ public class DAOAccess {
 
     }
 
+    /**
+     * busca un string en un archivo
+     *
+     * @param urlBase : directorio del archivo MDB
+     * @param usuario : usuario access
+     * @param password : contraseña access
+     *
+     * @retun String nombre_administrador : nombre del administrador
+     **/
     public String getNombreAdministrador(String urlBase, String usuario, String password){
         try{
             controller = new ConectionAccessBO(urlBase, usuario, password);

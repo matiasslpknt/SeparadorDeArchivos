@@ -2,113 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e6e31d5d-1f53-4df7-8548-05d125e15c14" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/COBRANZAS AGOSTO 20 LOS CEREZOS.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/COBRANZAS AGOSTO 20 TOWER I.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/CUPONES SEPT 20 EDUARDO I.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/CUPONES SEPT 20 EDUARDO II.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/CUPONES SEPT 20 LESOAN I.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/CUPONES SEPT 20 LOS CEREZOS.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/CUPONES SEPT 20 TOWER II.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/CUPONES SEPT LESOAN II.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/LIQUIDACION SEPT 20 EDUARDO I.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/LIQUIDACION SEPT 20 EDUARDO II.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/LIQUIDACION SEPT 20 EDUARDO V.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/LIQUIDACION SEPT 20 LESOAN I.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/LIQUIDACION SEPT 20 LESOAN II.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/LIQUIDACION SEPT 20 LOS CEREZOS.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/LIQUIDACION SEPT 20 TOWER II.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/ESTUDIO CARRARA Y ASOC/LISTADO MORA AGOSTO 20 LOS CEREZOS.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/INDICE EDUARDO I.mdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/INDICE EDUARDO II.mdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/INDICE GROPPO TOWER IV.ldb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/INDICE GROPPO TOWERS II.mdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/descargados/INDICE LESOAN I.mdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_001.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_002.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_003.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_004.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_005.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_006.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_007.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_008.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_009.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_010.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_011.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_012.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_013.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_014.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_015.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_016.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_017.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_018.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_019.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_020.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_021.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_022.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_023.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_024.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_025.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_026.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_027.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_028.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_029.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_030.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_031.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_032.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_033.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_034.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_035.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_036.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_037.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_038.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_039.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_040.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_041.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_042.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_043.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_044.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_045.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_046.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_047.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_048.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_049.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_050.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_051.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_052.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_053.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_054.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_055.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_056.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_057.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_058.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_059.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_060.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_061.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_062.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Patagonia Village_063.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/Resumen_TowerIII.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII.mdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_001.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_002.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_003.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_004.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_005.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_006.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_007.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_008.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_009.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_010.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_011.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_012.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/TowerIII_013.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/default.asp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/defaultSinPh.asp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/defaultSinPhNEW.asp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/archivos/salida/ESTUDIO CARRARA Y ASOC/09-2020/easyasp_adovbs.asp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Business/AccessBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Business/AccessBO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Business/PDFReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Business/PDFReader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/Principal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/Principal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Persistence/DAOAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Persistence/DAOAccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Persistence/DAOAdministrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Persistence/DAOAdministrador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Persistence/DAOConsorcio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Persistence/DAOConsorcio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Persistence/DAOUsuarioFtp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Persistence/DAOUsuarioFtp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -272,6 +174,7 @@
       <workItem from="1598879557361" duration="1134000" />
       <workItem from="1598995407158" duration="20000" />
       <workItem from="1599237813493" duration="6625000" />
+      <workItem from="1599271240636" duration="8896000" />
     </task>
     <servers />
   </component>
@@ -291,10 +194,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="640" y="256" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1592320352032" />
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1598995424832">
+    <state x="707" y="239" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1599277347895">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1598995424832" />
+    <state x="707" y="239" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1920.1040@0.0.1920.1040" timestamp="1599277347895" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1599277313645">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1599277313645" />
     <state width="1877" height="278" key="GridCell.Tab.0.bottom" timestamp="1599248496270">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

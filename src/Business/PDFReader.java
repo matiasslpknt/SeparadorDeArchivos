@@ -15,11 +15,27 @@ public class PDFReader {
         return leerPDF.readPDFInFolder(directorio, buscar);
     }
 
+    /**
+     * busca un string en un archivo
+     *
+     * @param directorio : directorio del archivo donde se va buscar
+     * @param buscar : cadena a buscar
+     *
+     * @retun boolean bandera : true si hay coincidencia de busqueda
+     **/
     public boolean leerDeUnPdf(String directorio, String buscar) {
         PDFReader leerPDF = new PDFReader();
         return leerPDF.readPDF(directorio, buscar);
     }
 
+    /**
+     * busca un string en un archivo
+     *
+     * @param directory : directorio del archivo donde se va buscar
+     * @param label : cadena a buscar
+     *
+     * @retun boolean bandera : true si hay coincidencia de busqueda
+     **/
     public boolean readPDF(String directory, String label) {
         try {
             //recorro cada uno de los elementos

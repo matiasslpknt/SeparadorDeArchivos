@@ -11,6 +11,11 @@ public class DAOConsorcio {
     ConectionBD con = new ConectionBD();
     Connection cn = con.conexion();
 
+    /**
+     * devuelve todos los consorcios
+     *
+     * @return ArrayList<Consorcio> consorcios : lista de todos los consorcios en base
+     **/
     public ArrayList<Consorcio> getConsorcios() {
         ArrayList<Consorcio> consorcios = new ArrayList<Consorcio>();
         String sql = "select * from consorcios;";
@@ -34,6 +39,13 @@ public class DAOConsorcio {
         return consorcios;
     }
 
+    /**
+     * devuelve todos los consorcios por ID
+     *
+     * @param id : id consorcio
+     *
+     * @return Consorcio consorcio : consorcio buscado por ID
+     **/
     public Consorcio getConsorcioById(int id) {
         String sql = "SELECT * FROM consorcios WHERE id = '" + id + "'";
         Statement st;
@@ -55,6 +67,13 @@ public class DAOConsorcio {
         return compl;
     }
 
+    /**
+     * devuelve todos los consorcios por nombre
+     *
+     * @param nombre : nombre consorcio
+     *
+     * @return Consorcio consorcio : consorcio buscado por nombre
+     **/
     public Consorcio getConsorcioByNombre(String nombre) {
         String sql = "SELECT * FROM consorcios WHERE nombre = '" + nombre + "'";
         Statement st;
@@ -76,6 +95,13 @@ public class DAOConsorcio {
         return compl;
     }
 
+    /**
+     * devuelve todos los consorcios por ID de administrador
+     *
+     * @param id : id administrador
+     *
+     * @return ArrayList<Consorcio> consorcios : lista de consorcios de un administrador
+     **/
     public ArrayList<Consorcio> getConsorciosByIdAdministrador(int id) {
         ArrayList<Consorcio> consorcios = new ArrayList<Consorcio>();
         String sql = "select * from consorcios WHERE administradores_id = " + id + ";";
@@ -99,6 +125,13 @@ public class DAOConsorcio {
         return consorcios;
     }
 
+    /**
+     * devuelve todos los consorcios que contengan un nombre
+     *
+     * @param nombre : nombre de consorcio contenido
+     *
+     * @return ArrayList<Consorcio> consorcios : lista de consorcios que contienen la busqueda
+     **/
     public ArrayList<Consorcio> getConsorciosConNombre(String nombre) {
         ArrayList<Consorcio> consorcios = new ArrayList<Consorcio>();
         String sql = "select * from consorcios where nombre like '%" + nombre + "%';";
@@ -122,6 +155,14 @@ public class DAOConsorcio {
         return consorcios;
     }
 
+    /**
+     * guarda un nuevo consorcio
+     *
+     * @param nombre : nombre a asignar al consorcio
+     * @param directorio : directorio ftp a asignar al consorcio
+     * @param idAdministrador : id de administrador a asignar al consorcio
+     * @param idConsorcioWeb : id del consorcio en el panel web
+     **/
     public void guardar(String nombre, String directorio, int idAdministrador, String idConsorcioWeb) {
         PreparedStatement pps;
         try {
@@ -137,6 +178,14 @@ public class DAOConsorcio {
         }
     }
 
+    /**
+     * modifica un consorcio consorcio
+     *
+     * @param nombre : nombre a asignar al consorcio
+     * @param directorioFtp : directorio ftp a asignar al consorcio
+     * @param id : id consorcio a modificar
+     * @param idConsorcioWeb : id del consorcio en el panel web
+     **/
     public void modificar(String nombre, String directorioFtp, int id, String idConsorcioWeb) {
         PreparedStatement pps;
         try {
@@ -148,6 +197,11 @@ public class DAOConsorcio {
         }
     }
 
+    /**
+     * elimina un consorcio por id
+     *
+     * @param idConsorcio : id consorcio a eliminar
+     **/
     public void eliminar(int idConsorcio) {
         try {
             PreparedStatement pps = cn.prepareStatement("DELETE FROM consorcios WHERE id = '" + idConsorcio + "'");
@@ -158,6 +212,11 @@ public class DAOConsorcio {
         }
     }
 
+    /**
+     * elimina todos los usuarios que tenga un administrador en sus distintos consorcios
+     *
+     * @param idAdministrador : id administrador
+     **/
     public void eliminarPorAdministrador(int idAdministrador) {
         try {
             PreparedStatement pps = cn.prepareStatement("DELETE FROM consorcios WHERE administradores_id = '" + idAdministrador + "'");

@@ -441,6 +441,9 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Actualiza las url de descarga de archivos del panel web mediante API REST
+     **/
     public void actualizarWeb() {
         for (Administrador admin : administradores) {
             for (Consorcio cons : admin.getConsorcios()) {
@@ -492,12 +495,22 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Obtiene el año en que se desea subir los archivos
+     *
+     * @return String anio
+     **/
     public String getAnioASubir() {
         String carpeta = getNombreCarpetaMesEnCurso();
         String[] componentes = carpeta.split("-");
         return componentes[1];
     }
 
+    /**
+     * Obtiene la fecha de hoy parseada anio-mes-dia
+     *
+     * @return String fecha
+     **/
     public String parsearFechaHoyParaWeb() {
         String fecha = getFechaHoy();
         String[] componentes = fecha.split("/");
@@ -507,6 +520,11 @@ public class Principal extends javax.swing.JFrame {
         return anio + "-" + mes + "-" + dia;
     }
 
+    /**
+     * Devuelve el nombre escrito del mes en curso.
+     *
+     * @return String mes_actual
+     **/
     public String getNombreMes() {
         String fecha = getFechaHoy();
         String[] componentes = fecha.split("/");
@@ -551,11 +569,19 @@ public class Principal extends javax.swing.JFrame {
         return mesEscrito;
     }
 
+    /**
+     * Actualiza el label de la progress bar de la pantalla principal.
+     *
+     * @param texto : texto a actualizar en label
+     **/
     public void actualizarLabelProgreso(String texto) {
         txtProgreso.setText(texto);
         super.update(this.getGraphics());
     }
 
+    /**
+     * Sube los archivos masivamente al directorio FTP
+     **/
     public void subirMasivamente() {
         int tamanio = administradores.size();
         double prog = 0;
@@ -573,6 +599,10 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Sube los archivos sin realizar ninguna validacion
+     * al directorio FTP de Casas DIaz
+     **/
     public void subidaDirectaCasasDiaz() {
         actualizarProgressBarCero();
         ArrayList<String> archivos = getArchivos(directorioDescargas, "pdf");
@@ -594,6 +624,10 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Sube los archivos sin realizar ninguna validacion
+     * al directorio FTP de Cuadrado / Zidarich
+     **/
     public void subidaDirectaCuadrado() {
         System.out.println();
         actualizarProgressBarCero();
@@ -633,6 +667,12 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Sube los archivos sin realizar ninguna validacion al directorio FTP de Zidarich
+     * creando las carpetas correspondientes a cada consorcio
+     *
+     * @param consorcios : lista de consorcios a procesar
+     **/
     public void subidaDirectaZidarich(ArrayList<Consorcio> consorcios) {
         System.out.println();
         actualizarProgressBarCero();
@@ -676,10 +716,15 @@ public class Principal extends javax.swing.JFrame {
                 upload(primerParam, segundoParam, tercerParam, cuartoParam, quintoParam, sextoParam, septimoParam, octavoParam);
                 contador++;
             }
-
         }
     }
 
+    /**
+     * Elimina los archivos que no corresponden a ninguna carpeta del directorio
+     * FTP y eliminando carpetas vacias.
+     *
+     * @param directorio : directorio a eliminar
+     **/
     public void eliminarCarpetasFTP(String directorio) {
         ArrayList<String> directorios = getDirectorios(directorio);
         if (directorios.size() > 0) {
@@ -719,6 +764,9 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Elimina los archivos despues de procesados del directorio local FTP
+     **/
     public void borrarArchivosFTP() {
         ArrayList<String> archivos = getArchivos(directorioFtp, "pdf");
         ArrayList<String> archivosMDB = getArchivos(directorioFtp, "mdb");
@@ -741,6 +789,10 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Splitea las paginas de los archivos pdf de los cupones de expensas
+     * de todos los consorcios cargados.
+     **/
     public void splittearPDFS() {
         for (Administrador admin : administradores) {
             ArrayList<Consorcio> cons = admin.getConsorcios();
@@ -755,6 +807,12 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Splitea por pagina cada archivo pdf de expensa pasado como parametro
+     * utilizando secuencia de 3 digitos para denotar el numero de pagina del pdf
+     *
+     * @param directorio : directorio pdf a procesar
+     **/
     public void splitPDF(String directorio) {
         try {
             PDDocument document = PDDocument.load(new File(directorio));
@@ -795,6 +853,9 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Carga el comboBox con los estilos disponibles
+     **/
     public void cargarComboBoxEstilo(JComboBox cboo) {
         cboo.addItem("MANZUR");
         cboo.addItem("CASAS DIAZ");
@@ -803,6 +864,9 @@ public class Principal extends javax.swing.JFrame {
         AutoCompleteDecorator.decorate(cboo);
     }
 
+    /**
+     * Inicializa los directorios de la carpeta descargados a vacios.
+     **/
     public void setearDirectoriosAdministradoresAVacios() {
         for (Administrador admin : administradores) {
             ArrayList<Consorcio> cons = admin.getConsorcios();
@@ -814,6 +878,9 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Renombra y mueve los archivos MDB desde "descargados" a "salida"
+     **/
     public void moverYRenombrarArchivosMDB() {
         ArrayList<String> mdbsFTP = getArchivos(directorioFtp, "mdb");
         ArrayList<String> mdbsDescargados = getArchivos(directorioDescargas, "mdb");
@@ -845,6 +912,9 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Mueve los archivos ASP descargados desde "ftp" a "salida"
+     **/
     public void moverArchivosASP() {
         for (Administrador admin : administradores) {
             String dir = directorioFtp + admin.getNombre() + "\\" + getNombreCarpetaInternaMesAnterior(getFechaHoy()) + "\\";
@@ -862,16 +932,26 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Actualiza el valor de la progressBar
+     **/
     public void actualizarProgressBar() {
         progressBar.setValue(progreso);
         progressBar.update(progressBar.getGraphics());
     }
 
+    /**
+     * Pone en 0 la progressBar
+     **/
     public void actualizarProgressBarCero() {
         progressBar.setValue(0);
         progressBar.update(progressBar.getGraphics());
     }
 
+    /**
+     * Crea en descargados una carpeta correspondiente a cada Administrador y reorganiza los archivos
+     * puestos en "descargados" en la carpeta correspondiente a cada administrador.
+     **/
     public void reacomodarArchivosDescargados() {
         ArrayList<String> archivosftp = getArchivos(directorioDescargas, "pdf");
         ArrayList<Administrador> misAdmins = administradorBO.getAdministradores();
@@ -908,6 +988,14 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Devuelve una bandera si existe el directorio para un administrador
+     *
+     * @param nombre : nomre del administrador
+     *
+     * @return boolean bandera : true si existe una carpeta con el nombre del administrador
+     *                           false si no existe una carpeta con el nombre del administrador
+     **/
     public boolean checkearSiExisteDirectorioEnDescargas(String nombre) {
         if (nombre.equals("")) {
             nombre = "-";
@@ -920,6 +1008,12 @@ public class Principal extends javax.swing.JFrame {
         return bandera;
     }
 
+    /**
+     * Descarga masivamente los archivos del tipo indicado del directorio del servidor FTP
+     *
+     * @param tipoArchivo : tipo / extension de los archivos que queremos descargar
+
+     **/
     public void descargaMasiva(String tipoArchivo) {
         int tamanio = administradores.size();
         double prog = 0;
@@ -937,6 +1031,10 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Genera las carpetas del administrador y la carpeta del mes anterior al procesar
+     * en el directorio FTP
+     **/
     public void generarCarpetasParaPoderDescargarDelFtp() {
         for (Administrador admin : administradores) {
             crearCarpetaMesEnCursoEnDirectorio(directorioFtp + admin.getNombre());
@@ -944,6 +1042,16 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Descarga los archivos del servidor FTP segun la extension
+     *
+     * @param url : url del servidor FTP del administrador
+     * @param usuario : usuario del servidor FTP del administrador
+     * @param password : contraseña del servidor FTP del administrador
+     * @param tipoExtension : tipo de archivo a descargar del servidor FTP
+     * @param nombreAdmin : nombre del administrador a descargar
+     * @param progress : Leva la cuenta para ir actualizando la progressBar
+     **/
     public void descargarArchivosDirectorioFTP(String url, String usuario, String password, String tipoExtension, String nombreAdmin, double progress) {
         ArrayList<String> archivos = getNombresArchvivosPDFEnDirectorioFTP(url, usuario, password, tipoExtension);
         int tamanio = archivos.size();
@@ -962,7 +1070,15 @@ public class Principal extends javax.swing.JFrame {
         System.out.println();
     }
 
-    //Descarga el archivo FTP a nuestra maquina
+    /**
+     * Descarga 1 archivo de servidor FTP
+     *
+     * @param user : usuario servidor FTP
+     * @param pass : contraseña servidor FTP
+     * @param localPath : directorio donde se guardará el archivo
+     * @param remotePath : directorio del archivo a descargar
+     * @param server : url del administrador en FTP
+     **/
     public void downloadFileByFTP(String user, String pass, String localPath, String remotePath, String server) {
         FTPClient client = new FTPClient();//Iniciamos el cliente del FTP
         FileOutputStream stream = null;
@@ -979,6 +1095,13 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Crea la carpeta del mes correspondiente a subir al servidor FTP
+     *
+     * @param url : url de la carpeta destino en servidor FTP
+     * @param user : usuario servidor FTP
+     * @param pass : contraseña servidor FTP
+     **/
     public void crearCarpetaEnServidorFTP(String url, String user, String pass) {
         ArrayList<String> archivos = getNombresCarpetasPDFEnDirectorioFTP(url, user, pass);
         boolean existeCarpeta = false;
@@ -1010,6 +1133,15 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Crea la carpeta del mes correspondiente a subir al servidor FTP de Zidarich
+     * y una carpeta para cada consorcio
+     *
+     * @param url : url de la carpeta destino en servidor FTP
+     * @param user : usuario servidor FTP
+     * @param pass : contraseña servidor FTP
+     * @param nombreConsorcio : nombre del consorcio para generar su carpeta
+     **/
     public void crearCarpetaEnServidorFTPZidarich(String url, String user, String pass, String nombreConsorcio) {
         ArrayList<String> archivos = getNombresCarpetasPDFEnDirectorioFTP(url, user, pass);
         boolean existeCarpeta = false;
@@ -1041,7 +1173,15 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    //Sube el archivo al FTP
+    /**
+     * Sube un archivo al servidor FTP
+     *
+     * @param url : url destino en servidor FTP
+     * @param user : usuario servidor FTP
+     * @param pass : contraseña servidor FTP
+     * @param nombreAdministrador : nombre del administrador
+     * @param progres : cuenta de la progressBar para calcular su actualizacion
+     **/
     public void uploadFileByFTP(String url, String user, String pass, String nombreAdministrador, double progres) {
         ArrayList<String> archivos = getNombresCarpetasPDFEnDirectorioFTP(url, user, pass);
         boolean existeCarpeta = false;
@@ -1126,6 +1266,18 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Sube 1 archivo al FTP
+     *
+     * @param server : servidor FTP del administraor a subir
+     * @param destino : directorio destino en servidor FTP
+     * @param user : usuario servidor FTP
+     * @param pass : contraseña servidor FTP
+     * @param localPath : directorio local del archivo a subir
+     * @param miProgreso : progreso actual
+     * @param tamanio : cantidad de archivos a subir
+     * @param numero : lleva la cuenta del numero de archivo que se esta subiendo
+     **/
     public void upload(String server, String destino, String user, String pass, String localPath, double miProgreso, int tamanio, int numero) {
         int port = 21;
         FTPClient ftpClient = new FTPClient();
@@ -1166,7 +1318,14 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    //Se fija si tiene "_" y numeros para ver si es un archivo spliteado (_001). Si no tiene devuelve el nombre completo con extension.
+    /**
+     * Se fija si tiene "_" y numeros para ver si es un archivo
+     * spliteado (_001). Si no tiene devuelve el nombre completo con extension.
+     *
+     * @param nombreArchivo : nombre del archivo
+     *
+     * @return String nombre_archivo : nombre del archivo con su extension
+     **/
     private String getNombreSiNoEsSplit(String nombreArchivo) {
         String nombre = nombreArchivo.replace(".pdf", "");
         String[] arreglo = nombre.split("_");
@@ -1188,7 +1347,16 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    //trae los nombres de los arhchivos en un directorio de servidor ftp
+    /**
+     * trae los nombres de los arhchivos en un directorio de servidor ftp
+     *
+     * @param url : url del directorio de la carpeta
+     * @param usuario : usuario del servidor FTP
+     * @param password : contraseña del servidor FTP
+     * @param extension : extension de los archivos
+     *
+     * @return ArrayList<String> nombres_archivos : lista de los nombres de los archivos en el directorio
+     **/
     private ArrayList<String> getNombresArchvivosPDFEnDirectorioFTP(String url, String usuario, String password, String extension) {
         ArrayList<String> listaDevolver = new ArrayList<String>();
         String[] arreglo = url.split("/");
@@ -1215,6 +1383,16 @@ public class Principal extends javax.swing.JFrame {
         return listaDevolver;
     }
 
+    /**
+     * trae los nombres de los arhchivos en un directorio de servidor ftp con la extension solicitada
+     *
+     * @param url : url del directorio de la carpeta
+     * @param usuario : usuario del servidor FTP
+     * @param password : contraseña del servidor FTP
+     * @param extension : extension de los archivos
+     *
+     * @return ArrayList<String> nombres_archivos : lista de los nombres de los archivos en el directorio
+     **/
     private ArrayList<String> getNombresArchvivosPDFEnDirectorioFTPConSplit(String url, String usuario, String password, String extension) {
         ArrayList<String> listaDevolver = new ArrayList<String>();
         String[] arreglo = url.split("/");
@@ -1241,7 +1419,15 @@ public class Principal extends javax.swing.JFrame {
         return listaDevolver;
     }
 
-    //trae los nombres de las carpetas en un directorio de servidor ftp
+    /**
+     * trae los nombres de las carpetas en un directorio de servidor ftp
+     *
+     * @param url : url del directorio de la carpeta
+     * @param usuario : usuario del servidor FTP
+     * @param password : contraseña del servidor FTP
+     *
+     * @return ArrayList<String> nombres_archivos : lista de los nombres de los archivos en el directorio
+     **/
     private ArrayList<String> getNombresCarpetasPDFEnDirectorioFTP(String url, String usuario, String password) {
         ArrayList<String> listaDevolver = new ArrayList<String>();
         String[] arreglo = url.split("/");
@@ -1269,6 +1455,12 @@ public class Principal extends javax.swing.JFrame {
         return listaDevolver;
     }
 
+    /**
+     * Cambia los nombres de los archivos en "descargados" al nombre correspondiente
+     * del archivo de la carpeta "ftp"
+     *
+     * @param ftp : lista de archivos en carpeta "ftp"
+     **/
     private void cambiarNombresDescargasAlDeFtp(ArrayList<Administrador> ftp) {
         for (Administrador descarga : administradores) {
             for (Administrador ftpAux : ftp) {
@@ -1304,16 +1496,37 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * extrae la extension ".pdf" de un archivo
+     *
+     * @param directorioArchivo : directorio del archivo
+     *
+     * @return String nombre_archivo : devuelve el nombre del archivo sin extension
+     **/
     private String extraerExtensionPDF(String directorioArchivo) {
         return directorioArchivo.replace(".pdf", "");
     }
 
+    /**
+     * extrae la extension ".pdf" de un archivo que viene con barras invertidas en el path
+     *
+     * @param directorioArchivo : directorio del archivo
+     *
+     * @return String nombre_archivo : devuelve el nombre del archivo sin extension
+     **/
     private String parsearNombre(String directorioArchivo) {
         String[] directorio = directorioArchivo.replace("\\", "/").split("/");
         String nombre = directorio[directorio.length - 1].replace(".pdf", "");
         return nombre;
     }
 
+    /**
+     * obtiene la ruta a un archivo especifico
+     *
+     * @param directorioArchivo : directorio del archivo
+     *
+     * @return String path : devuelve el path del archivo sin su nombre
+     **/
     private String obtenerRuta(String directorioArchivo) {
         String[] directorio = directorioArchivo.replace("\\", "/").split("/");
         String ruta = "";
@@ -1323,6 +1536,11 @@ public class Principal extends javax.swing.JFrame {
         return ruta;
     }
 
+    /**
+     * devuelve el nombre de la carpeta correspondiente al mes a procesar
+     *
+     * @return String nombre_carpeta : nombre de la carpeta correspondiente al mes a procesar
+     **/
     private String getNombreCarpetaMesEnCurso() {
         String[] miFecha = getFechaHoy().split("/");
         if (!chkFinMes.isSelected()) {
@@ -1345,6 +1563,11 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Crea un arreglo de administradores de todos los administradores dentro de la carpeta "ftp"
+     *
+     * @return ArrayList<Administrador> administradores_ftp : lista de administradores en la carpeta "ftp"
+     **/
     private ArrayList<Administrador> getAdministradoresFtp() {
         String textoExpensa = "";
         String textoLiquidacion = "";
@@ -1400,6 +1623,11 @@ public class Principal extends javax.swing.JFrame {
         return administradoresFtp;
     }
 
+    /**
+     * devuelve el nombre de la carpeta correspondiente al mes a anterior procesar
+     *
+     * @return String nombre_carpeta : nombre de la carpeta correspondiente al mes anterior a procesar
+     **/
     private String getNombreCarpetaInternaMesAnterior(String fecha) {
         String[] miFecha = fecha.split("/");
         if (!chkFinMes.isSelected()) {
@@ -1422,6 +1650,11 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Genera la carpeta mes-anio segun la fecha pasada
+     *
+     * @param fecha : fecha para crear carpeta correspondiente mes-anio
+     **/
     private void generarCarpetaMesEnCurso(String fecha) {
         String[] miFecha = getFechaHoy().split("/");
         String nombreCarpetaInterna = "";
@@ -1449,7 +1682,13 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    //busca carpetas vacias
+    /**
+     * busca carpetas vacias
+     *
+     * @param carpetaRaiz : carpeta donde buscara archivos
+     *
+     * @return List<File> archivos : devuelve una lista de carpetas que no tienen archivos
+     **/
     public List<File> buscarCarpetasVacias(File carpetaRaiz) {
         //siempre retornamos al menos una lista vacía
         List<File> resultado = new ArrayList<>();
@@ -1466,7 +1705,11 @@ public class Principal extends javax.swing.JFrame {
         return resultado;
     }
 
-    //eilimina carpetas vacias
+    /**
+     * eilimina carpetas vacias
+     *
+     * @param directorio : directorio de la carpeta
+     **/
     public void eliminarCarpetasVacias(String directorio) {
         File file = new File(directorio);
         List<File> listaCarpetasVacias = buscarCarpetasVacias(file);
@@ -1475,12 +1718,19 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * de la lista de administraores de la carpeta de "descargados", elimina
+     * todos aquellos que no tienen archivos y que no tienen consorcios cargados.
+     **/
     private void quitarAdministradoresSinarchivos() {
         eliminarConsorciosSinArchivos();
         eliminarAdministradoresSinConsorcios();
     }
 
-    //elimina los consorcios que no tienen archivos en la carpeta de descargas
+    /**
+     * elimina los consorcios de la lista de archivos de "descargados" que no tienen
+     * asignado ningun tipo de archivo (expensa, mora o liquidacion)
+     **/
     private void eliminarConsorciosSinArchivos() {
         for (int i = 0; i < administradores.size(); i++) {
             ArrayList<Consorcio> consorciosAdmin = administradores.get(i).getConsorcios();
@@ -1494,7 +1744,11 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    //elimina de la lista de administradores (administradores) los administradores que no tienen consorcios cargados en la carpeta de descargas
+
+    /**
+     * elimina de la lista de administradores (administradores) los administradores
+     * que no tienen consorcios cargados en la carpeta de descargas
+     **/
     private void eliminarAdministradoresSinConsorcios() {
         for (int i = 0; i < administradores.size(); i++) {
             if (administradores.get(i).getConsorcios().isEmpty()) {
@@ -1504,6 +1758,11 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Reconoce los distintos tipos de archivos (expensas/liquidacion/mora) y asigna
+     * a la lista de administradores de "descargados" el directorio correspondiente a
+     * cada archivo.
+     **/
     private void reconocerTiposPDF() {
         String textoExpensa = "";
         String textoLiquidacion = "";
@@ -1561,6 +1820,9 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Genera la lista de administradores en "descargados"
+     **/
     private ArrayList<Administrador> getAdministradoresEnDirectorio(String directorio) {
         ArrayList<String> administradoresDescargados = getAdministradoresEnDirectorioPlano(directorio);
         System.out.println(administradoresDescargados.size());
@@ -1584,11 +1846,21 @@ public class Principal extends javax.swing.JFrame {
         return adminis;
     }
 
+    /**
+     * reemplaza la barra invertida por barra comun /
+     *
+     * @return String linea : lina parseada sin barras invertidas
+     **/
     private String parsearBarraEscape(String linea) {
         return linea.replace("\\", "/");
     }
 
-    //devuelve una lista de los nombres de administradores en la carpeta de descargas(devuelve los nombres de las carpetas)
+    /**
+     * devuelve una lista de los nombres de administradores en la carpeta
+     * "descargas" (devuelve los nombres de las carpetas)
+     *
+     * @return ArrayList<String> carpetas : lista de nombres de carpetas de administradores
+     **/
     private ArrayList<String> getAdministradoresEnDirectorioPlano(String directorio) {
         ArrayList<String> archivos = getArchivos(directorio, "pdf");
         ArrayList<String> archivos2 = getArchivos(directorio, "PDF");
@@ -1608,13 +1880,25 @@ public class Principal extends javax.swing.JFrame {
         return archivosReturn;
     }
 
-    //crea un directorio con el nombre especificado
+    /**
+     * crea un directorio con el nombre especificado
+     *
+     * @param directorioConNombreArchivo : file a crear
+     **/
     private void crearCarpetaMesEnCursoEnDirectorio(String directorioConNombreArchivo) {
         File directorio = new File(directorioConNombreArchivo);
         directorio.mkdir();
     }
 
-    //renombra y mueve los archivos del directorio de descargas al directorio de salida
+    /**
+     * renombra y mueve los archivos del directorio de descargas al directorio de salida
+     *
+     * @param directorioDescarga : directorio origen (en "descargados")
+     * @param directorioSalida : directorio destino (en "salida")
+     * @param tipo : tipo de archivo
+     *
+     * @throws IOException
+     **/
     private void renombrarYMoverArchivo(String directorioDescarga, String directorioSalida, String tipo) throws IOException {
         Path temp = Files.move(Paths.get(directorioDescarga + "." + tipo),
                 Paths.get(directorioSalida + "." + tipo));
@@ -1625,14 +1909,22 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    //Obtiene la fecha del dia.
+    /**
+     * Obtiene la fecha del dia de hoy.
+     *
+     * @retun String fecha : devuelve la fecha de hoy con formato dd/MM/yyyy
+     **/
     private String getFechaHoy() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDateTime now = LocalDateTime.now();
         return dtf.format(now);
     }
 
-    //trae el nombre de todos los archivos en un directorio
+    /**
+     * trae el nombre de todos los archivos en un directorio
+     *
+     * @retun ArrayList<String> archivos : lista de archivos en un directorio
+     **/
     private ArrayList<String> getArchivos(String directorio, String tipo) {
         ArrayList<String> archivos = new ArrayList<String>();
         try (Stream<Path> walk = Files.walk(Paths.get(directorio))) {
@@ -1647,6 +1939,11 @@ public class Principal extends javax.swing.JFrame {
         return archivos;
     }
 
+    /**
+     * develve los directorios internos
+     *
+     * @retun ArrayList<String> directorios : lista de directorios
+     **/
     private ArrayList<String> getDirectorios(String directorio) {
         ArrayList<String> archivos = new ArrayList<String>();
         try (Stream<Path> walk = Files.walk(Paths.get(directorio))) {
@@ -1661,6 +1958,9 @@ public class Principal extends javax.swing.JFrame {
         return archivos;
     }
 
+    /**
+     * crea la imagen de coterranea para mostrar en el panel principal
+     **/
     private void createUIComponents() {
         imagen = new JLabel(new ImageIcon("images/coterranea.png"));
     }
